@@ -1,0 +1,73 @@
+*{
+    box-sizing: border-box;
+}
+
+.mainPage{
+    border:2px solid red;
+    display:flex;
+    flex-direction: column;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: flex-start;
+    /* align-items: flex-end; */
+    width: 100%;
+    border: 2px solid green;
+}
+.verticalTabs{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid pink;
+    padding-left:0px;
+
+    width:300px;
+    height: 100vh;
+}
+.navigation{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left:0px;
+    
+}.navigation ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left:0px;
+    margin-left: 0px;
+    border: 2px solid blue;
+    width: 100%;
+    
+}
+.navigation ul li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid red;
+    list-style-type:none;
+    width: 100%;
+    margin:5px;
+    height: 100px;
+}
+
+.mainContent{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid aqua;
+    width: 100%;
+    margin:0px 100px 0px 100px;
+    height: 100vh;
+}
+
+.listContainer{
+    display:flex;
+    border:2px solid orange;
+    flex-direction:column;
+    width: 800px;
+}
+
