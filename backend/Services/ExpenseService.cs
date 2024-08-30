@@ -18,14 +18,6 @@ public class ExpenseService:IExpenseService
 {
     private readonly ExpenseTrackerDbContext _expenseContext;
     
-    private DateTime? FormatTime(DateTime? time)
-     {
-         if(time.HasValue!= false)
-        {
-             return DateTime.ParseExact(time.Value.ToString("HH:MM"),"HH:mm",CultureInfo.InvariantCulture);
-         }
-        return null;
-     }
     public ExpenseService(ExpenseTrackerDbContext expenseContext)
     {
         _expenseContext = expenseContext;

@@ -7,9 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SystemTextJson;
 
+var MyAllowSpecificOrigins = "expenseTracker";
 var builder = WebApplication.CreateBuilder(args);
 
 //services for DI
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name:MyAllowSpecificOrigins,
+    policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .WithMethods("GET","POST","DELETE","PUT")
+            .WithHeaders("Content-Type","Authorizations");
+    });
+});
 builder.Services.AddScoped<IExpenseService,ExpenseService>();
 builder.Services.AddDbContext<ExpenseTrackerDbContext>(options => options
     .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -20,6 +31,9 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 });
 
 var app = builder.Build();
+
+app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapGet("/expenses", async Task<List<Expenses>>(IExpenseService service) =>
 {
