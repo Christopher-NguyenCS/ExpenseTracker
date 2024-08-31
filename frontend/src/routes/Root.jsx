@@ -40,14 +40,9 @@ function Root() {
             onChange={onChange} 
             value={date}
             selectRange={true}
-            activeStartDate={new Date()}
           />
           <TransactionList/>
         </div>
-        {/* {date.length > 1 ? <div>
-          <p>Start: {date[0].toDateString()}</p>
-          <p>End:{date[1].toDateString()}</p>
-          </div>:null } */}
       </section>
       
     </>
