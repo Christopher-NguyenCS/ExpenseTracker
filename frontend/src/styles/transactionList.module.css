@@ -1,7 +1,60 @@
 
+
 .container{
-    
-    border: 2px solid purple;
+    border: 5px solid green;
     width:100%;
-    height: 60%;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+header h2{
+    display:flex;
+    justify-content: center;
+    border:2px dotted brown;
+    margin-top:0px;
+}
+
+.btnContainer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    border: 2px solid pink;
+}
+
+.btn{
+    height: 30px;
+    border:none;
+    border-radius:10px;
+    background-color: rgba(54, 216, 97, 0.848);
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn:hover{
+    background-color:  rgba(36, 199, 79, 0.736);;
+}
+.listContainer{
+    border:10px solid purple;
+    height: auto;
+}
+
+.list{
+    list-style-type: none;
+    padding-left:0px;
+    border:2px solid red;
+    height:auto;
+    max-height: 350px;
+    overflow-y:scroll;
+    margin-bottom: 0px;
+}
+
+
+
+.list li{
+    margin:1.5rem;
+    font-size: large;
+    height:30px;
+    border: 2px dotted brown;
+    border-radius: 5px;
+    text-align: center;
 }
