@@ -9,8 +9,8 @@ import{
 import ErrorPage from './error-page.jsx';
 import HomePage from './routes/HomePage.jsx';
 
-import Expenses from './routes/Expenses.jsx';
-import ListExpenses from './routes/ListExpenses.jsx';
+import Expenses, {loader as expenseLoader} from './routes/Expenses.jsx';
+import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
 import Dashboard from './routes/Dashboard.jsx';
 
 
@@ -27,13 +27,16 @@ const router = createBrowserRouter([
       {
         path:"expenses",
         element:<Expenses/>,
+        loader: expenseLoader,
         children:[
           {
-            path:":id",
-            element:<ListExpenses/>
+            path:"modal",
+            element:<ExpenseModal/>,
+            action:modalAction,
           }
         ],
       },
+
     ],
   },
 ]);

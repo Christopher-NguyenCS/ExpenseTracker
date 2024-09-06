@@ -19,7 +19,7 @@ useEffect(() => {
       const result = await getExpenses();
       if(active){
         setData(result);
-        setLoading(false);
+        // setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -29,9 +29,7 @@ useEffect(() => {
   return ()=>{
     active =false;
   };
-}, [data]); 
-
-  
+}, []); 
 
   function onChange(value){
     setDate(value);
@@ -57,7 +55,8 @@ useEffect(() => {
         </div>
 
         <div className={styles.mainContent}>
-          <Outlet/>      
+          {/* <Outlet context={[data,setData]} />       */}
+          <Outlet/>
         </div>
 
         <div className={styles.listContainer}>

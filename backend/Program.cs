@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173")
             .WithMethods("GET","POST","DELETE","PUT")
-            .WithHeaders("Content-Type","Authorizations");
+            .WithHeaders("Content-Type","Authorization");
     });
 });
 builder.Services.AddScoped<IExpenseService,ExpenseService>();
@@ -42,8 +42,8 @@ app.MapGet("/expenses", async Task<List<Expenses>>(IExpenseService service) =>
 
 app.MapGet("/test-connection", async (ExpenseTrackerDbContext context) =>
 {
-         var canConnect = await context.Database.CanConnectAsync();
-         return canConnect ? Results.Ok("Connection successful!") : Results.Problem("Connection failed.");
+    var canConnect = await context.Database.CanConnectAsync();
+    return canConnect ? Results.Ok("Connection successful!") : Results.Problem("Connection failed.");
 });
 
 
@@ -58,8 +58,12 @@ app.MapGet("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound<String>>> 
 });
 
 
-app.MapPost("/expenses", async(List<Expenses> expensesItems, IExpenseService expenseService,ExpenseTrackerDbContext context)=>
+app.MapPost("/expenses",async Task<Results<Ok<List<Expenses>>,NotFound>>([FromBody]List<Expenses> expensesItems, IExpenseService expenseService,ExpenseTrackerDbContext context)=>
 {
+    if(expensesItems == null){
+        Console.WriteLine("BAD REQUEST");
+        return TypedResults.NotFound();
+    }
     await expenseService.AddExpense(expensesItems);
     return TypedResults.Ok(await context.Expenses.ToListAsync());
 });

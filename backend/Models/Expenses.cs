@@ -9,7 +9,7 @@ namespace ExpenseTracker.Models;
 
 public class Expenses
 {
-    public int Id{get;set;}
+    public Guid Id{get;set;}
     public string? Title{get;set;}
     public string? Description{get;set;}
       [JsonConverter(typeof(DateConverter))]
