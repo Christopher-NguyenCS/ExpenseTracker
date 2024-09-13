@@ -8,10 +8,10 @@ namespace ExpenseTracker.Services;
 public interface IExpenseService
 {
     Task<List<Expenses>> GetAllExpense();
-    Task<Expenses?> GetExpense(int id);
-    Task AddExpense(List<Expenses> expenseItem);
-    Task UpdateExpense(int id, Expenses expenseItem);
-    public Task DeleteExpense(int id);
+    Task<Expenses?> GetExpense(Guid id);
+    Task AddExpense(Expenses expenseItem);
+    Task UpdateExpense(Guid id, Expenses expenseItem);
+    public Task DeleteExpense(Guid id);
 }
 
 public class ExpenseService:IExpenseService
@@ -28,26 +28,21 @@ public class ExpenseService:IExpenseService
         return await _expenseContext.Expenses.ToListAsync(); 
     }
 
-    public async Task<Expenses?>  GetExpense(int id)
+    public async Task<Expenses?>  GetExpense(Guid id)
     {
         var expense = await _expenseContext.Expenses.FindAsync(id);
         return expense;
     }
 
 
-    public async Task AddExpense(List<Expenses> expenseItems)
+    public async Task AddExpense(Expenses expenseItems)
     {
-        foreach(var item in expenseItems)
-        {
-            _expenseContext.Add(item);
-
-        }
+        _expenseContext.Add(expenseItems);
         await _expenseContext.SaveChangesAsync();
-        
     }
 
 
-    public async Task UpdateExpense(int id, Expenses expenseItem)
+    public async Task UpdateExpense(Guid id, Expenses expenseItem)
     {
         var updateExpense = await GetExpense(id);
 
@@ -66,7 +61,7 @@ public class ExpenseService:IExpenseService
     }
 
 
-    public async Task DeleteExpense(int id)
+    public async Task DeleteExpense(Guid id)
     {
         var deleteExpense =  await GetExpense(id);
 

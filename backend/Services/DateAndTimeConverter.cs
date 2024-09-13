@@ -16,7 +16,10 @@ public class DateConverter : JsonConverter<DateTimeOffset>
         DateTime date = DateTime.ParseExact(dateString, _dateFormat, CultureInfo.InvariantCulture);
 
         DateTimeOffset localDate = new DateTimeOffset(date.Year,date.Month,date.Day, 0,0,0, TimeSpan.Zero);
-        return localDate;
+        // DateTimeOffset localDate = new DateTimeOffset(date, TimeZoneInfo.Local.GetUtcOffset(date));
+        DateTimeOffset utcDate = localDate.ToUniversalTime();
+
+        return utcDate;
     }
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
     {
@@ -35,7 +38,8 @@ public class TimeConverter : JsonConverter<DateTimeOffset?>
         {
             DateTimeOffset time = DateTimeOffset.ParseExact(timeString, _timeFormat, CultureInfo.InvariantCulture);
             DateTimeOffset localTime = new DateTimeOffset(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, time.Hour, time.Minute, 0, time.Offset);
-            return localTime.ToUniversalTime();
+            DateTimeOffset utcTime = localTime.ToUniversalTime();
+            return utcTime;
         }
         return null;
     }

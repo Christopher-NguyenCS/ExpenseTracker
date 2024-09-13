@@ -33,6 +33,12 @@ const router = createBrowserRouter([
             path:"modal",
             element:<ExpenseModal/>,
             action:modalAction,
+          },
+          {
+            path:"modal/:id",
+            element:<ExpenseModal/>,
+            action:modalAction,
+            loader:expenseLoader,
           }
         ],
       },
