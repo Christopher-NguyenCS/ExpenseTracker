@@ -13,7 +13,7 @@ export default function EditExpenseModal({location}){
     const {data} = useLoaderData();
     const {id} = useParams();
     const mainData = findData(data,id);
-    // console.log("Got id from expenses when it goes to the edit link",id);
+
     console.log(mainData);
 
     const handleClose = () =>{
@@ -43,7 +43,7 @@ export default function EditExpenseModal({location}){
                             <input 
                                 type="number" 
                                 name="cost" 
-                                value={mainData.cost} 
+                                defaultValue={mainData.cost} 
                             />
                         </div>
                         <div className={styles.formGroup}>
@@ -51,7 +51,7 @@ export default function EditExpenseModal({location}){
                             <input 
                                 type="text" 
                                 name="category" 
-                                value={mainData.category}
+                                defaultValue={mainData.category}
                             />
                         </div>
                         <div className={styles.formGroup}>
@@ -59,7 +59,7 @@ export default function EditExpenseModal({location}){
                             <input 
                                 type="date" 
                                 name="date" 
-                                value={format((mainData.date),"yyyy-MM-dd")}
+                                defaultValue={format((mainData.date),"yyyy-MM-dd")}
                                 required 
                             />
                         </div>
@@ -68,14 +68,14 @@ export default function EditExpenseModal({location}){
                             <input 
                                 type="time" 
                                 name="time" 
-                                value={format(parse(mainData.time,"hh:mm a",new Date()),"HH:mm")}
+                                defaultValue={format(parse(mainData.time,"hh:mm a",new Date()),"HH:mm")}
                             />
                         </div>
                         <div className={styles.formDescription}>
                             <label htmlFor="description">Description:</label>
                             <textarea 
                                 name="description" id="description" 
-                                value={mainData.description}>
+                                defaultValue={mainData.description}>
                             </textarea>
                         </div>
                         <div className={styles.submitBtnContainer}>

@@ -69,9 +69,9 @@ export const deleteExpenses = async(data) =>{
     return result;
 }
 
-export const updateExpenses = async(data) =>{
+export const updateExpenses = async(data,id) =>{
     try {
-        const response = await fetch(`http://localhost:5258/expenses/${data.id}`, {
+        const response = await fetch(`http://localhost:5258/expenses/${id}`, {
             method: "PUT",
             body: JSON.stringify({
                 Id: uuidv4(),

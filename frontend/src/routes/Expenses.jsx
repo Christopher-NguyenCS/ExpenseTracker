@@ -94,9 +94,7 @@ export default function Expenses() {
                                 onClick={() => handleDelete([value])}
                             />
                             <Link to={`modal/${value.id}`} state={{ background: location }} className={selected[index]?styles.editIcon:styles.hideIcon}>
-                                <FaEdit 
-                                    // className={selected[index] ? styles.editIcon : styles.hideIcon} 
-                                />
+                                <FaEdit />
                             </Link>
                             </td>
                             <td>{value.date}</td>

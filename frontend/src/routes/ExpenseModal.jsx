@@ -19,7 +19,8 @@ export async function action({request,params}){
         }
         case "PUT":{
             const formData = Object.fromEntries(await request.formData());
-            const data = updateExpenses(formData);
+            const id = params.id;
+            const data = updateExpenses(formData,id);
             return redirect("/expenses");
         }
     }
