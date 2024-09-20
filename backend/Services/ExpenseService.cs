@@ -9,7 +9,7 @@ public interface IExpenseService
 {
     Task<List<Expenses>> GetAllExpense();
     Task<Expenses?> GetExpense(Guid id);
-    Task AddExpense(Expenses expenseItem);
+    Task<Expenses> AddExpense(Expenses expenseItem);
     Task UpdateExpense(Guid id, Expenses expenseItem);
     public Task DeleteExpense(Guid id);
 }
@@ -35,10 +35,11 @@ public class ExpenseService:IExpenseService
     }
 
 
-    public async Task AddExpense(Expenses expenseItems)
+    public async Task<Expenses> AddExpense(Expenses expenseItems)
     {
         _expenseContext.Add(expenseItems);
         await _expenseContext.SaveChangesAsync();
+        return expenseItems;
     }
 
 

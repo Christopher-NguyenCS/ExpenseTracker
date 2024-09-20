@@ -2,6 +2,7 @@ import { Form,useNavigate,useParams,useLoaderData } from "react-router-dom";
 import styles from "../styles/modal.module.css";
 import {IoCloseOutline} from "react-icons/io5";
 import { format,parse } from "date-fns";
+import { useState } from "react";
 
 
 function findData(lists,id){ 
@@ -10,9 +11,10 @@ function findData(lists,id){
 
 export default function EditExpenseModal({location}){
     const navigate = useNavigate();
-    const {data} = useLoaderData();
+    const data = useLoaderData();
     const {id} = useParams();
     const mainData = findData(data,id);
+    const [title,setTitle] = useState(mainData.title);
 
     console.log(mainData);
 
@@ -20,11 +22,15 @@ export default function EditExpenseModal({location}){
         navigate("/expenses");
     }
 
+    const handleChange = (event) =>{
+        setTitle(event.target.value);
+    }
+
     return(
         <>
             <div className={styles.modalDiv} onClick={()=>{handleClose()}}>
                 <div className={styles.modal} onClick={(e)=>{e.stopPropagation()}}>
-                    <h1>{mainData.title}</h1>
+                    <h1>{title}</h1>
                     <div className={styles.closeBtnContainer}>
                         <button className={styles.closeBtnOutline} onClick={()=>{handleClose()}}><IoCloseOutline className={styles.closeBtn} onClick={()=>{handleClose()}}/></button>
                     </div>
@@ -36,6 +42,8 @@ export default function EditExpenseModal({location}){
                                 name="title" 
                                 defaultValue={mainData.title} 
                                 required
+                                onChange={handleChange}
+                                value={title}
                             />
                         </div>
                         <div className={styles.formGroup}>
@@ -44,6 +52,7 @@ export default function EditExpenseModal({location}){
                                 type="number" 
                                 name="cost" 
                                 defaultValue={mainData.cost} 
+                                step=".01"
                             />
                         </div>
                         <div className={styles.formGroup}>

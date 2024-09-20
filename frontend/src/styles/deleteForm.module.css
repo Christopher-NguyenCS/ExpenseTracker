@@ -1,0 +1,10 @@
+.deleteIcon{
+    color:rgba(227, 45, 45, 0.774);
+    box-shadow: 1px;
+    cursor: pointer;
+}
+.hideIcon{
+    opacity: 0%;
+    cursor: not-allowed;
+    pointer-events: none;
+}

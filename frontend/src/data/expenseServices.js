@@ -13,7 +13,6 @@ export const getExpenses = async() =>{
         if(!response.ok){
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        // const text = await response.text();
         const data = await response.json();
         return data;
     }catch (error) {
@@ -42,17 +41,18 @@ export const postExpenses = async (data) => {
         if (!response.ok) {
             throw new Error(`HTTP ERROR! status: ${response.status} `);
         }
-        
+        const newData = response.json();
+        return newData;
     } catch (error) {
         console.error('Error adding expenses:', error.message);
         return null;
     }
 };
 
-export const deleteExpenses = async(data) =>{
+export const deleteExpenses = async(ids) =>{
 
-    const promises = data.map((value) => {
-        fetch(`http://localhost:5258/expenses/${value.id}`,{
+    const promises = ids.map((id) => {
+        fetch(`http://localhost:5258/expenses/${id}`,{
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -74,7 +74,7 @@ export const updateExpenses = async(data,id) =>{
         const response = await fetch(`http://localhost:5258/expenses/${id}`, {
             method: "PUT",
             body: JSON.stringify({
-                Id: uuidv4(),
+                Id: id,
                 Title: data.title,
                 Description:data.description,
                 Date:format(parseISO(data.date), "MM/dd/yyyy"),
@@ -89,7 +89,8 @@ export const updateExpenses = async(data,id) =>{
         if (!response.ok) {
             throw new Error(`HTTP ERROR! status: ${response.status} `);
         }
-        
+        const updatedData = response.json();
+        return updatedData;
     } catch (error) {
         console.error('Error adding expenses:', error.message);
         return null;

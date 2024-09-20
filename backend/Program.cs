@@ -63,14 +63,14 @@ app.MapGet("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound<String>>> 
 });
 
 
-app.MapPost("/expenses",async (IExpenseService expenseService,Expenses expensesItems)=>
+app.MapPost("/expenses",async Task<IResult> (IExpenseService expenseService,Expenses expensesItems)=>
 {
-    await expenseService.AddExpense(expensesItems);
-    return Results.StatusCode(201);
+    var addedExpenses = await expenseService.AddExpense(expensesItems);
+    return Results.Json(addedExpenses);
 });
 
 
-app.MapPut("/expenses/{id}", async Task<Results<Ok,NotFound>>(Guid id,[FromBody]Expenses updateExpenseItem, ExpenseTrackerDbContext context, IExpenseService expenseService) =>
+app.MapPut("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound>>(Guid id,[FromBody]Expenses updateExpenseItem, ExpenseTrackerDbContext context, IExpenseService expenseService) =>
 {
     var expenseItem =  await expenseService.GetExpense(id);
     if(expenseItem == null)
@@ -78,7 +78,7 @@ app.MapPut("/expenses/{id}", async Task<Results<Ok,NotFound>>(Guid id,[FromBody]
         return TypedResults.NotFound();
     }
     await expenseService.UpdateExpense(id,updateExpenseItem);
-    return TypedResults.Ok();
+    return TypedResults.Ok<Expenses>(expenseItem);
 });
 
 

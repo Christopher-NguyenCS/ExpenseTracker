@@ -14,20 +14,24 @@ import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
 import Dashboard from './routes/Dashboard.jsx';
 
 
+
 const router = createBrowserRouter([
   {
     path:"/",
     element: <Root/>,
     errorElement: <ErrorPage/>,
+    loader:expenseLoader,
     children:[
       {
         path:"/",
         element:<Dashboard/>
       },
+  
       {
         path:"expenses",
         element:<Expenses/>,
         loader: expenseLoader,
+        action:modalAction,
         children:[
           {
             path:"modal",

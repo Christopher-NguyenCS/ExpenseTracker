@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet,Link } from 'react-router-dom';
+import { Outlet,Link, useLoaderData, useActionData } from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
 import TransactionList from './TransactionList';
 import {differenceInCalendarDays} from 'date-fns';
@@ -8,32 +8,17 @@ import "../styles/calendar.css";
 import { getExpenses } from '../data/expenseServices.js';
 
 function Root() {
+  const rootData= useLoaderData();
 
+  console.log("rootData:",rootData);
   const[date,setDate] = useState(new Date());
   const[data, setData] = useState(null);
 
-useEffect(() => {
-  let active = true;
-  const fetchData = async () => {
-    try {
-      const result = await getExpenses();
-      if(active){
-        setData(result);
-        // setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  fetchData();
-  return ()=>{
-    active =false;
-  };
-}, []); 
 
   function onChange(value){
     setDate(value);
   }
+
 
 
 
@@ -50,12 +35,12 @@ useEffect(() => {
             <ul>
               <li><Link to="/">Dashboard</Link> </li>
               <li><Link to="expenses">Expenses</Link> </li>
+
             </ul>
           </nav>
         </div>
 
         <div className={styles.mainContent}>
-          {/* <Outlet context={[data,setData]} />       */}
           <Outlet/>
         </div>
 
@@ -65,7 +50,7 @@ useEffect(() => {
             value={date}
             selectRange={true}
           />
-          <TransactionList data={data}/>
+          <TransactionList transactionData={rootData}/>
         </div>
       </section>
       

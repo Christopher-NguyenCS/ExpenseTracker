@@ -1,20 +1,32 @@
 import { useState, useEffect } from "react";
-import { Link,redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../styles/transactionList.module.css";
 import { set } from "date-fns";
 import { getExpenses } from "../data/expenseServices";
 
 
+export default function TransactionList({transactionData}){
+    // const [list, setList] = useState(null);
 
-export default function TransactionList({data}){
+    // useEffect(()=>{
+    //     if(transactionData)
+    //         setList(transactionData);
+    // },[transactionData,setList]);
 
-    if(!data){
-        return(
-            <>
-                <div>Loading data....</div>
-            </>
-        )
-    }
+    // if(!list){
+    //     return(
+    //         <>
+    //             <div>Loading data....</div>
+    //         </>
+    //     )
+    // }
+    // if(!data){
+    //     return(
+    //         <>
+    //             <div>Loading data...</div>
+    //         </>
+    //     )
+    // }
 
     return(
         <>
@@ -23,7 +35,7 @@ export default function TransactionList({data}){
                 <div className={styles.listContainer}>
                     <header><h2>Transaction History</h2></header>
                     <ul className={styles.list}>    
-                        {data.length > 0 ? data.map(d => (<li key={d?.id}>{d.title}: ${d.cost}</li>)):<li>None in Transaction history: {data.length}</li>}
+                        {transactionData.length > 0 ? transactionData.map(d => (<li key={d?.id}>{d.title}: ${d.cost}</li>)):<li>None in Transaction history: {transactionData.length}</li>}
                     </ul>
                 </div> 
 

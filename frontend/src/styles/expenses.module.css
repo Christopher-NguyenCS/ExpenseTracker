@@ -30,6 +30,13 @@ th,td{
     border-radius: 5px;
     width: auto;
 }
+.deleteForm{
+    
+}
+.deleteContainer{
+    border:2px solid red;
+    margin: 5px;
+}
 .deleteIcon{
     color:rgba(227, 45, 45, 0.774);
     box-shadow: 1px;
