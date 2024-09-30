@@ -6,12 +6,12 @@ import{
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import ErrorPage from './error-page.jsx';
-import HomePage from './routes/HomePage.jsx';
 
+import ErrorPage from './error-page.jsx';
 import Expenses, {loader as expenseLoader} from './routes/Expenses.jsx';
 import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
 import Dashboard from './routes/Dashboard.jsx';
+import { CalendarProvider } from './routes/CalendarProvider.jsx';
 
 
 
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
       {
         path:"/",
         element:<Dashboard/>
+        
       },
-  
       {
         path:"expenses",
         element:<Expenses/>,
@@ -53,6 +53,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <CalendarProvider>
+      <RouterProvider router={router}/>
+    </CalendarProvider>
   </StrictMode>,
 )

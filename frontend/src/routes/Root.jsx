@@ -1,29 +1,30 @@
 import { useEffect, useState } from 'react';
-import { Outlet,Link, useLoaderData, useActionData } from 'react-router-dom';
+import { Outlet,Link, useLoaderData } from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
 import TransactionList from './TransactionList';
-import {differenceInCalendarDays} from 'date-fns';
+import { getExpenses } from '../data/expenseServices';
 import Calendar from 'react-calendar';
 import "../styles/calendar.css";
-import { getExpenses } from '../data/expenseServices.js';
+import SharedCalendar from './SharedCalendar';
+
+
 
 function Root() {
-  const rootData= useLoaderData();
+  const rootData = useLoaderData();
+  
+  // const [specificExpense,setSepecificExpense] = useState(null);
 
-  console.log("rootData:",rootData);
   const[date,setDate] = useState(new Date());
-  const[data, setData] = useState(null);
+ 
 
-
-  function onChange(value){
-    setDate(value);
+  const handleDateChange =(date)=>{
+    setDate(date);
   }
-
-
 
 
   return (
     <>
+
       <div className={styles.mainPage}>
         <h1>Main Page!</h1>
       </div>
@@ -41,15 +42,20 @@ function Root() {
         </div>
 
         <div className={styles.mainContent}>
-          <Outlet/>
+            <Outlet/>
         </div>
 
         <div className={styles.listContainer}>
-          <Calendar 
-            onChange={onChange} 
-            value={date}
+          {/* <Calendar 
+            onChange={setDate}             
             selectRange={true}
-          />
+            value={date}
+            activeStartDate={null}
+          /> */}
+           {/* <SharedCalendar
+            onDateChange={handleDateChange}
+          />  */}
+
           <TransactionList transactionData={rootData}/>
         </div>
       </section>

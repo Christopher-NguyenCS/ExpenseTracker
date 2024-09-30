@@ -2,23 +2,62 @@ import {v4 as uuidv4} from "uuid";
 import { parse,format,parseISO } from "date-fns";
 
 
-export const getExpenses = async() =>{
+
+// export const getExpenses = async() =>{
+//     try{
+//             const response = await fetch("http://localhost:5258/expenses?startDate=null&endDate=null",{
+//                 method:"GET", 
+//                 headers:{
+//                     "Content-Type":"application/json"
+//                 }
+//             });
+//             if(!response.ok){
+//                 throw new Error(`HTTP error! status: ${response.status}`);
+//             }
+//             const data = await response.json();
+//             return data;
+//         }catch (error) {
+//             throw new Error(error.message);
+//         }
+// }
+
+export const getExpenses = async(date = null) =>{
     try{
-        const response = await fetch("http://localhost:5258/expenses",{
-            method:"GET", 
-            headers:{
-                "Content-Type":"application/json"
+   
+        if(!date){
+            const response = await fetch("http://localhost:5258/expenses?startDate=null&endDate=null",{
+                method:"GET", 
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            });
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
-        if(!response.ok){
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            return data;
         }
-        const data = await response.json();
-        return data;
+        else{
+            console.log(typeof(date[0]));
+            console.log(typeof(date[1]));
+            console.log(date[0]);
+                const response = await fetch(`http://localhost:5258/expenses?startDate=${date[0]}&endDate=${date[1]}`,{
+                    method:"GET", 
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                });
+                if(!response.ok){
+                    throw new Error("Error grabbing data with specific dates!!!");
+                }
+                return response;
+            }
+           
+
     }catch (error) {
         throw new Error(error.message);
     }
-};
+}
 
 export const postExpenses = async (data) => {
     

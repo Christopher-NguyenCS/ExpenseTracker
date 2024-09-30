@@ -15,7 +15,7 @@ public class DateConverter : JsonConverter<DateTimeOffset>
         string dateString = reader.GetString()!;
         DateTime date = DateTime.ParseExact(dateString, _dateFormat, CultureInfo.InvariantCulture);
 
-        DateTimeOffset localDate = new DateTimeOffset(date.Year,date.Month,date.Day, 0,0,0, TimeSpan.Zero);
+        DateTimeOffset localDate = new DateTimeOffset(date, TimeZoneInfo.Local.GetUtcOffset(date));
         // DateTimeOffset localDate = new DateTimeOffset(date, TimeZoneInfo.Local.GetUtcOffset(date));
         DateTimeOffset utcDate = localDate.ToUniversalTime();
 

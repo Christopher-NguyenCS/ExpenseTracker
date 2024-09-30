@@ -1,7 +1,10 @@
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 using ExpenseTracker.DataPostgreSQL;
 using ExpenseTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using Npgsql;
 
 namespace ExpenseTracker.Services;
 
@@ -9,6 +12,7 @@ public interface IExpenseService
 {
     Task<List<Expenses>> GetAllExpense();
     Task<Expenses?> GetExpense(Guid id);
+   Task<List<Expenses>> GetExpensesDateRanged(String startDate, String endDate);
     Task<Expenses> AddExpense(Expenses expenseItem);
     Task UpdateExpense(Guid id, Expenses expenseItem);
     public Task DeleteExpense(Guid id);
@@ -17,10 +21,20 @@ public interface IExpenseService
 public class ExpenseService:IExpenseService
 {
     private readonly ExpenseTrackerDbContext _expenseContext;
-    
-    public ExpenseService(ExpenseTrackerDbContext expenseContext)
+    private readonly NpgsqlDataSource _dataSource;
+
+    private DateTime convertDateToUTC(String date){
+        
+        DateTime newDate = DateTime.ParseExact(date,  "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Eastern Daylight Time)'", CultureInfo.InvariantCulture,DateTimeStyles.AssumeUniversal);
+
+        // DateTime utcDate = new DateTime(newDate.Year,newDate.Month,newDate.Day, newDate.Hour,newDate.Minute,0,0, DateTimeKind.Utc);
+     
+        return newDate.ToUniversalTime();
+    }
+    public ExpenseService(ExpenseTrackerDbContext expenseContext, NpgsqlDataSource datasource)
     {
         _expenseContext = expenseContext;
+        _dataSource = datasource;
 
     }
     public async Task<List<Expenses>> GetAllExpense()
@@ -34,6 +48,43 @@ public class ExpenseService:IExpenseService
         return expense;
     }
 
+    public async Task<List<Expenses>> GetExpensesDateRanged(string startDate, string endDate)
+{
+    DateTime newStartDate = convertDateToUTC(startDate); 
+    DateTime newEndDate = convertDateToUTC(endDate);
+    var firstParameter = new NpgsqlParameter("@p1", NpgsqlTypes.NpgsqlDbType.TimestampTz);
+    var secondParameter = new NpgsqlParameter("@p2", NpgsqlTypes.NpgsqlDbType.TimestampTz);
+    List<Expenses> newExpenseList = new List<Expenses>();
+
+    await using var cmd = _dataSource.CreateCommand("SELECT * FROM expenses WHERE \"Date\" >= @p1 AND \"Date\" <= @p2");
+    firstParameter.Value = newStartDate;
+    secondParameter.Value = newEndDate;
+   
+
+    cmd.Parameters.Add(firstParameter);
+    cmd.Parameters.Add(secondParameter);
+
+    await using (var reader = await cmd.ExecuteReaderAsync())
+    {
+        while (await reader.ReadAsync())
+        {
+            var expense = new Expenses
+            {
+                Id = reader.GetGuid(6),
+                Title = reader.GetString(0),
+                Description = reader.GetString(1),
+                Date = reader.GetDateTime(2),
+                Time = reader.GetDateTime(3),
+                Cost = reader.GetDouble(4),
+                Category = reader.GetString(5)
+            };
+            newExpenseList.Add(expense);
+        }
+    }
+
+    Console.WriteLine($"Counter: {newExpenseList.Count}");
+    return newExpenseList;
+}
 
     public async Task<Expenses> AddExpense(Expenses expenseItems)
     {

@@ -1,4 +1,4 @@
-import { Form,useNavigate,redirect,useParams, useLocation, useOutletContext,useSubmit, useActionData } from "react-router-dom";
+import { Form,useNavigate,redirect, useLocation, useOutletContext, useActionData } from "react-router-dom";
 import { deleteExpenses, getExpenses, postExpenses,updateExpenses } from "../data/expenseServices";
 import styles from "../styles/modal.module.css";
 import {IoCloseOutline} from "react-icons/io5";
@@ -19,7 +19,8 @@ export async function action({request,params}){
         case "PUT":{
             const data = Object.fromEntries(formData);
             const id = params.id;
-            const updatedData = await updateExpenses(data,id);
+            // const updatedData = await updateExpenses(data,id);
+            await updateExpenses(data,id);
             return redirect("/expenses");
         }
         case "DELETE":{

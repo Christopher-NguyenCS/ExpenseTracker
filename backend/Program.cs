@@ -5,14 +5,28 @@ using ExpenseTracker.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SystemTextJson;
 
 var MyAllowSpecificOrigins = "expenseTracker";
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Configuration.AddJsonFile("./appsettings.json", optional: false, reloadOnChange: true);
+
 
 //services for DI
+builder.Services.AddScoped<IExpenseService,ExpenseService>();
+
+builder.Services.AddSingleton<NpgsqlDataSource>(sp =>
+{
+    return NpgsqlDataSource.Create(connectionString);
+});
+
+builder.Services.AddDbContext<ExpenseTrackerDbContext>(options => options
+    .UseNpgsql(connectionString));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name:MyAllowSpecificOrigins,
@@ -23,9 +37,6 @@ builder.Services.AddCors(options =>
             .WithHeaders("Content-Type","Authorization");
     });
 });
-builder.Services.AddScoped<IExpenseService,ExpenseService>();
-builder.Services.AddDbContext<ExpenseTrackerDbContext>(options => options
-    .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.Converters.Add(new DateConverter());
@@ -35,21 +46,43 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 var app = builder.Build();
 
 app.UseRouting();
+app.UseAuthorization();
 app.UseCors(MyAllowSpecificOrigins);
 
-app.MapGet("/expenses", async(IExpenseService service) =>
+app.MapGet("/expenses", async Task<IResult>( String? startDate, String? endDate,IExpenseService service) =>
 {
-    var expenses = await service.GetAllExpense();
+
+    Console.WriteLine(startDate);
+    Console.WriteLine(endDate);
+    List<Expenses> expenses;
+    if(endDate == null || endDate == startDate){
+        expenses = await service.GetAllExpense();
+        return Results.Json(expenses);
+    }
+    if(startDate == null){
+        DateTime date = DateTime.Now;
+        startDate = date.ToString();
+
+    }
+    
+    expenses = await service.GetExpensesDateRanged(startDate, endDate);
     return Results.Json(expenses);
-    // return await service.GetAllExpense();
+    
+    // if(startDate == null && endDate == null){
+    //     var expenses = await service.GetAllExpense();
+    //     return Results.Json(expenses);
+    // }
+    // else if(startDate != null && endDate == null){
+    //     //get the expenses from the specific date
+    // }
+    // else{
+    //     //means startDate and endDate is not null and both parameters are given, thus getExpenses from a range which is defined by the startDate and endDate
+    // }
+    
 
 });
 
-app.MapGet("/test-connection", async (ExpenseTrackerDbContext context) =>
-{
-    var canConnect = await context.Database.CanConnectAsync();
-    return canConnect ? Results.Ok("Connection successful!") : Results.Problem("Connection failed.");
-});
+
 
 
 app.MapGet("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound<String>>> (Guid id, IExpenseService expenseService, ExpenseTrackerDbContext context) =>
