@@ -24,18 +24,17 @@ public class ExpenseService:IExpenseService
     private readonly NpgsqlDataSource _dataSource;
 
     private DateTime convertDateToUTC(String date){
-        
-        DateTime newDate = DateTime.ParseExact(date,  "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Eastern Daylight Time)'", CultureInfo.InvariantCulture,DateTimeStyles.AssumeUniversal);
 
-        // DateTime utcDate = new DateTime(newDate.Year,newDate.Month,newDate.Day, newDate.Hour,newDate.Minute,0,0, DateTimeKind.Utc);
+        DateTime newDate = DateTime.ParseExact(date,  "ddd, dd MMM yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+
+        DateTime utcDate = new DateTime(newDate.Year,newDate.Month,newDate.Day, newDate.Hour,newDate.Minute,newDate.Second,newDate.Millisecond, DateTimeKind.Utc);
      
-        return newDate.ToUniversalTime();
+        return utcDate;
     }
     public ExpenseService(ExpenseTrackerDbContext expenseContext, NpgsqlDataSource datasource)
     {
         _expenseContext = expenseContext;
         _dataSource = datasource;
-
     }
     public async Task<List<Expenses>> GetAllExpense()
     {
@@ -56,14 +55,13 @@ public class ExpenseService:IExpenseService
     var secondParameter = new NpgsqlParameter("@p2", NpgsqlTypes.NpgsqlDbType.TimestampTz);
     List<Expenses> newExpenseList = new List<Expenses>();
 
-    await using var cmd = _dataSource.CreateCommand("SELECT * FROM expenses WHERE \"Date\" >= @p1 AND \"Date\" <= @p2");
+    await using var cmd = _dataSource.CreateCommand("SELECT * FROM expenses WHERE \"Date\" >= @p1 AND \"Date\" <= @p2 ORDER BY \"Date\",\"Cost\",\"Time\"");
     firstParameter.Value = newStartDate;
     secondParameter.Value = newEndDate;
-   
 
     cmd.Parameters.Add(firstParameter);
     cmd.Parameters.Add(secondParameter);
-
+    
     await using (var reader = await cmd.ExecuteReaderAsync())
     {
         while (await reader.ReadAsync())
@@ -81,8 +79,6 @@ public class ExpenseService:IExpenseService
             newExpenseList.Add(expense);
         }
     }
-
-    Console.WriteLine($"Counter: {newExpenseList.Count}");
     return newExpenseList;
 }
 

@@ -8,10 +8,12 @@ import{
 } from "react-router-dom";
 
 import ErrorPage from './error-page.jsx';
-import Expenses, {loader as expenseLoader} from './routes/Expenses.jsx';
+// import Expenses, {loader as expenseLoader} from './routes/Expenses.jsx';
+import Expenses from './routes/Expenses.jsx';
 import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
 import Dashboard from './routes/Dashboard.jsx';
 import { CalendarProvider } from './routes/CalendarProvider.jsx';
+import {loader as expenseLoader} from './data/dataLoader.js'
 
 
 
@@ -24,8 +26,8 @@ const router = createBrowserRouter([
     children:[
       {
         path:"/",
-        element:<Dashboard/>
-        
+        element:<Dashboard/>,
+        loader: expenseLoader,
       },
       {
         path:"expenses",

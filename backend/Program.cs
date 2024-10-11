@@ -51,38 +51,24 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.MapGet("/expenses", async Task<IResult>( String? startDate, String? endDate,IExpenseService service) =>
 {
-
-    Console.WriteLine(startDate);
-    Console.WriteLine(endDate);
     List<Expenses> expenses;
-    if(endDate == null || endDate == startDate){
-        expenses = await service.GetAllExpense();
+
+    if(startDate == null){
+        DateTime now = DateTime.Now;
+        startDate = now.ToString();
+        endDate = startDate;
+        expenses = await service.GetExpensesDateRanged(startDate,endDate);
         return Results.Json(expenses);
     }
-    if(startDate == null){
-        DateTime date = DateTime.Now;
-        startDate = date.ToString();
-
+    else if (endDate == null) {
+        endDate = startDate;
+        expenses = await service.GetExpensesDateRanged(startDate,endDate);
+        return Results.Json(expenses);
     }
     
     expenses = await service.GetExpensesDateRanged(startDate, endDate);
     return Results.Json(expenses);
-    
-    // if(startDate == null && endDate == null){
-    //     var expenses = await service.GetAllExpense();
-    //     return Results.Json(expenses);
-    // }
-    // else if(startDate != null && endDate == null){
-    //     //get the expenses from the specific date
-    // }
-    // else{
-    //     //means startDate and endDate is not null and both parameters are given, thus getExpenses from a range which is defined by the startDate and endDate
-    // }
-    
-
 });
-
-
 
 
 app.MapGet("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound<String>>> (Guid id, IExpenseService expenseService, ExpenseTrackerDbContext context) =>

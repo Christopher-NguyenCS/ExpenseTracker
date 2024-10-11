@@ -3,7 +3,8 @@ import { deleteExpenses, getExpenses, postExpenses,updateExpenses } from "../dat
 import styles from "../styles/modal.module.css";
 import {IoCloseOutline} from "react-icons/io5";
 import EditExpenseModal from "./EditExpenseModal.jsx";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { CalendarContext } from "./CalendarProvider.jsx";
 
 export async function action({request,params}){
     const formData = await request.formData();
@@ -19,20 +20,20 @@ export async function action({request,params}){
         case "PUT":{
             const data = Object.fromEntries(formData);
             const id = params.id;
-            // const updatedData = await updateExpenses(data,id);
             await updateExpenses(data,id);
-            return redirect("/expenses");
+            return 1;
         }
         case "DELETE":{
             const ids = formData.getAll('id')
             await deleteExpenses(ids);
-            return getExpenses();
+            return 1;
         }
     }
 }
 
 export default function ExpenseModal(){
     const [expenses,setExpenses] = useOutletContext();
+    const{dateRange,setDateRange} = useContext(CalendarContext);
     const actionData = useActionData();
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,13 +42,13 @@ export default function ExpenseModal(){
     useEffect(() => {
         if (actionData) {
             setExpenses(actionData);
-            navigate("/expenses");
+            navigate(-1);
         }
     }, [actionData, setExpenses]);
 
 
-    const handleClose = () =>{
-        navigate("/expenses");
+    const handleClose = async() =>{
+        navigate(`/expenses/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
     }
 
     if(location.pathname !== "/expenses/modal"){

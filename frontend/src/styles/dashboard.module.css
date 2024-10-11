@@ -1,3 +1,27 @@
 .pieContainer{
-    border: 2px solid red;
+    display: flex;
+    flex-direction: column ;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    border: 2px solid red; 
+}
+
+.dashboardContainer{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid aqua;
+    width: 100%;
+    margin:0px 0px 0px 100px;
+    height: 100vh;
+}
+
+.listContainer{
+    display:flex;
+    border:1px solid black;
+    flex-direction:column;
+    height: 100%;
+    width: 40%;   
 }

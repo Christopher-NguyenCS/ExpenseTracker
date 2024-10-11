@@ -55,24 +55,8 @@
     height: 100px;
 }
 
-.mainContent{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    border: 3px solid aqua;
-    width: 100%;
-    margin:0px 100px 0px 100px;
-    height: 100vh;
-}
 
-.listContainer{
-    display:flex;
-    border:10px solid orange;
-    flex-direction:column;
-    height: 100%;
-    width: 800px;
 
-    
-}
+
 
 

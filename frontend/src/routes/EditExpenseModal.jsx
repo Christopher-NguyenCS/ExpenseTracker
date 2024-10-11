@@ -14,9 +14,9 @@ export default function EditExpenseModal({location}){
     const data = useLoaderData();
     const {id} = useParams();
     const mainData = findData(data,id);
+    console.log(mainData);
     const [title,setTitle] = useState(mainData.title);
 
-    console.log(mainData);
 
     const handleClose = () =>{
         navigate("/expenses");

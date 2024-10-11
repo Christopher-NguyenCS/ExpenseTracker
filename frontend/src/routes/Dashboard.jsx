@@ -3,17 +3,20 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js/auto";
 import PieChart from "./PieChart";
 import { useContext,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getMonth,getDate, getYear, isSameDay,format } from "date-fns";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { getMonth,getDate, getYear, isSameDay, getDaysInMonth } from "date-fns";
 import { months } from "../data/months";
 import { CalendarContext } from "./CalendarProvider";
+
 import SharedCalendar from "./SharedCalendar";
+import TransactionList from "./TransactionList";
 Chart.register(CategoryScale);
 
 
-export default function Dashboard({data}){
+export default function Dashboard(){
     const {dateRange,setDateRange} = useContext(CalendarContext);
     const navigate = useNavigate();
+    const data = useLoaderData();
 
     
     const handleDateChange = (newDateRange) => {
@@ -21,16 +24,15 @@ export default function Dashboard({data}){
         navigate(`/?startDate=${newDateRange.startDate}&endDate=${newDateRange.endDate}`);
       };
 
-
-    //remove
-      useEffect(() => {
+    useEffect(() => {
         navigate(`/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
-      }, [dateRange, navigate]);
+    }, [dateRange, navigate]);
 
     function displayDate(){
-        if(dateRange.length>1){
+        if(dateRange){
             if(isSameDay(dateRange.startDate,dateRange.endDate)){
-                return(<h1>{months[getMonth(dateRange.startDate)]}</h1>);
+            
+                return(<h1>{months[getMonth(dateRange.startDate)]} {getDate(dateRange.startDate)}, {getYear(dateRange.startDate)}</h1>);
             }
             return(
                 <h1>{ months[getMonth(dateRange.startDate)]} {getDate(dateRange.startDate)}, {getYear(dateRange.startDate)} - {months[getMonth(dateRange.endDate)]} {getDate(dateRange.endDate)}, {getYear(dateRange.endDate)}</h1>
@@ -38,18 +40,22 @@ export default function Dashboard({data}){
         }
         return(<h1>{months[getMonth(dateRange.startDate)]}</h1>);
     }
+
     return(
         <>
-            <div>
-                <h1>Dashboard Page</h1>
-            </div>
-
-            <section>
+            <section className={styles.dashboardContainer}>
                 <div className={styles.pieContainer}>
-                    {displayDate(dateRange)}
+                    <div>
+                        <header>{displayDate(dateRange)} </header>
+
+                    </div>
                     <PieChart chartData={data}/>
                 </div>
-                <SharedCalendar onChange={handleDateChange} value={dateRange}/>
+
+                <div className={styles.listContainer}>
+                    <SharedCalendar onChange={handleDateChange} value={dateRange}/>
+                    <TransactionList transactionData={data}/>
+                </div>
             </section>
         </>
     )

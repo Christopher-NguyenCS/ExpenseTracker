@@ -1,26 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Outlet,Link, useLoaderData } from 'react-router-dom';
+
+import { Outlet,Link,} from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
-import TransactionList from './TransactionList';
-import { getExpenses } from '../data/expenseServices';
-import Calendar from 'react-calendar';
-import "../styles/calendar.css";
-import SharedCalendar from './SharedCalendar';
+
+
 
 
 
 function Root() {
-  const rootData = useLoaderData();
-  
-  // const [specificExpense,setSepecificExpense] = useState(null);
-
-  const[date,setDate] = useState(new Date());
- 
-
-  const handleDateChange =(date)=>{
-    setDate(date);
-  }
-
 
   return (
     <>
@@ -41,25 +27,8 @@ function Root() {
           </nav>
         </div>
 
-        <div className={styles.mainContent}>
-            <Outlet/>
-        </div>
-
-        <div className={styles.listContainer}>
-          {/* <Calendar 
-            onChange={setDate}             
-            selectRange={true}
-            value={date}
-            activeStartDate={null}
-          /> */}
-           {/* <SharedCalendar
-            onDateChange={handleDateChange}
-          />  */}
-
-          <TransactionList transactionData={rootData}/>
-        </div>
+        <Outlet/>
       </section>
-      
     </>
   )
 }

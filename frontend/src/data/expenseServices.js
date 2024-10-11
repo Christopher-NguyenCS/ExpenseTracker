@@ -2,29 +2,9 @@ import {v4 as uuidv4} from "uuid";
 import { parse,format,parseISO } from "date-fns";
 
 
-
-// export const getExpenses = async() =>{
-//     try{
-//             const response = await fetch("http://localhost:5258/expenses?startDate=null&endDate=null",{
-//                 method:"GET", 
-//                 headers:{
-//                     "Content-Type":"application/json"
-//                 }
-//             });
-//             if(!response.ok){
-//                 throw new Error(`HTTP error! status: ${response.status}`);
-//             }
-//             const data = await response.json();
-//             return data;
-//         }catch (error) {
-//             throw new Error(error.message);
-//         }
-// }
-
 export const getExpenses = async(date = null) =>{
     try{
-   
-        if(!date){
+           if(date == null){
             const response = await fetch("http://localhost:5258/expenses?startDate=null&endDate=null",{
                 method:"GET", 
                 headers:{
@@ -38,9 +18,6 @@ export const getExpenses = async(date = null) =>{
             return data;
         }
         else{
-            console.log(typeof(date[0]));
-            console.log(typeof(date[1]));
-            console.log(date[0]);
                 const response = await fetch(`http://localhost:5258/expenses?startDate=${date[0]}&endDate=${date[1]}`,{
                     method:"GET", 
                     headers:{
