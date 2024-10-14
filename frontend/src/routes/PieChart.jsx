@@ -39,20 +39,14 @@ function countCategory(chartData){
         }
         else{
             
-            // counterList.push({category:prevCategory,cost:totalCost.toFixed(2)});
-            // counterList.push(totalCost.toFixed(2));
+
             counterList.push({cost:{value:totalCost.toFixed(2)}});
-            // counterList.push({cost:totalCost.toFixed(2)});
+          
             prevCategory = item.category;
             totalCost = item.cost;
         }
     });
-
-    //push remaining cost to list
-    // counterList.push({category:prevCategory,cost:totalCost.toFixed(2)});
-    // counterList.push({cost:totalCost.toFixed(2)});
     counterList.push({cost:{value:totalCost.toFixed(2)}});
-    // counterList.push(totalCost.toFixed(2));
     return counterList;
 }
 

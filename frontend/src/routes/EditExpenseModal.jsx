@@ -1,29 +1,55 @@
-import { Form,useNavigate,useParams,useLoaderData } from "react-router-dom";
+import { Form,useNavigate,useParams,useLoaderData, useLocation } from "react-router-dom";
 import styles from "../styles/modal.module.css";
 import {IoCloseOutline} from "react-icons/io5";
 import { format,parse } from "date-fns";
-import { useState } from "react";
+import { useState,useEffect,useContext } from "react";
+import { getExpense } from "../data/expenseServices";
+import { CalendarContext } from "./CalendarProvider";
 
-
-function findData(lists,id){ 
-    return lists.find(list => list.id == id)
+async function findData(id){ 
+    const response = await getExpense(id);
+    return response.json();
 }
 
 export default function EditExpenseModal({location}){
     const navigate = useNavigate();
-    const data = useLoaderData();
+    // const history = useHistory();
+    const {dateRange} = useContext(CalendarContext);
+    const [mainData, setMainData] = useState(null);
     const {id} = useParams();
-    const mainData = findData(data,id);
-    console.log(mainData);
-    const [title,setTitle] = useState(mainData.title);
+    const [title,setTitle] = useState(null);
 
+    
+    useEffect(()=>{
+        let isMounted = true;
+        const getData = async(id)=>{
+            try {
+                const data = await findData(id);
+                if(isMounted){
+                    setMainData(data);
+                    setTitle(data.title);                
+                }
+            } catch (error) {
+                console.error('Error fetching specific expense you wanted to edit: ', error);
+            }
+        }
+        getData(id);
+        return()=>{
+            isMounted=false;
+        };
+    },[id])
 
     const handleClose = () =>{
-        navigate("/expenses");
+        navigate(`/expenses/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
     }
 
     const handleChange = (event) =>{
         setTitle(event.target.value);
+    }
+
+
+    if(!mainData){
+        return <div>does not exist, the id ......</div>
     }
 
     return(
@@ -34,7 +60,7 @@ export default function EditExpenseModal({location}){
                     <div className={styles.closeBtnContainer}>
                         <button className={styles.closeBtnOutline} onClick={()=>{handleClose()}}><IoCloseOutline className={styles.closeBtn} onClick={()=>{handleClose()}}/></button>
                     </div>
-                    <Form method="put" className={styles.formContainer}>
+                    <Form method="put" className={styles.formContainer} >
                         <div className={styles.formGroup}>
                             <label htmlFor="title">Title:</label>
                             <input 
@@ -43,7 +69,7 @@ export default function EditExpenseModal({location}){
                                 defaultValue={mainData.title} 
                                 required
                                 onChange={handleChange}
-                                value={title}
+                                
                             />
                         </div>
                         <div className={styles.formGroup}>

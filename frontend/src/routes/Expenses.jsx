@@ -1,37 +1,33 @@
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import styles from "../styles/expenses.module.css" ;
 import {Link,useLocation, useLoaderData, Outlet, useNavigate, useActionData} from "react-router-dom";
-import { getExpenses } from "../data/expenseServices";
+
 import {FaEdit} from "react-icons/fa";
 import DeleteExpense from "./DeleteExpense";
 import { CalendarContext } from "./CalendarProvider";
-
+import ExpenseLoading from "./ExpenseLoading";
 
 import SharedCalendar from "./SharedCalendar";
+import { getExpenses } from "../data/expenseServices";
 
 
 
 export default function Expenses() {
     const{dateRange,setDateRange} = useContext(CalendarContext);
     const data  = useLoaderData();
-    const expenseResult = useActionData();
     const [selected, setSelected] = useState(new Array(data.length).fill(false));
     const [expenses,setExpenses] = useState(data);
     const location = useLocation();
     const navigate = useNavigate();
     
 
-    useEffect(()=>{
-        if(expenseResult){
-            navigate(`/expenses?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`)
-        }
-    },[expenseResult, dateRange, navigate]);
     const handleDateChange = (newDateRange) => {
         setDateRange(newDateRange);
         navigate(`/expenses?startDate=${newDateRange.startDate}&endDate=${newDateRange.endDate}`);
       };
 
       useEffect(() => {
+        setExpenses(getExpenses(dateRange));
         navigate(`/expenses?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
       }, [dateRange, navigate]);
 
@@ -59,10 +55,13 @@ export default function Expenses() {
 
 
     return (
+        
+        
         <div className={styles.container}>
             <header className={styles.header1}>
                 <h1>Expense Transaction</h1>
-                <Link to="modal" state={{ background: location }} className={styles.addBtn}>
+
+                <Link to={`/expenses/modal/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} state={{ background: location }} className={styles.addBtn}>
                     <button type="button">Add Expense</button>
                 </Link>
                 <Outlet context={[expenses,setExpenses]}/>
@@ -78,6 +77,7 @@ export default function Expenses() {
                         <th>Total</th>
                     </tr>
                 </thead>
+            
                 <tbody>
                     {expenses ? data.map((expense, index) => (
                         <tr key={expense.id}>
@@ -89,14 +89,17 @@ export default function Expenses() {
                                 checked={selected[index]}
                                 onChange={e => handleCheckBox(e, index)}
                                 />
-                                <DeleteExpense 
-                                        expenseSet={expense}
-                                        selected={selected[index]}
-                                        onDelete={handleDelete}
-                                />
+                                <Suspense fallback={<ExpenseLoading/>}>
+                                    <DeleteExpense 
+                                            expenseSet={expense}
+                                            selected={selected[index]}
+                                            onDelete={handleDelete}
+                                    />
+
+                                </Suspense>
                                 <Link 
-                                to={`modal/${expense.id}`} 
-                                state={{ background: location }} 
+                                to={`/expenses/modal/${expense.id}/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} 
+                                state={{ background: location, data: {expense}}} 
                                 className={selected[index]?styles.editIcon:styles.hideIcon} 
                                 onClick={()=>{selected[index] = false}}
                                 >
@@ -110,6 +113,7 @@ export default function Expenses() {
                         </tr>
                     )):<div>Loading expenses</div>}
                 </tbody>
+             
             </table>
             <SharedCalendar onChange={handleDateChange} value={dateRange}/>
     </div>

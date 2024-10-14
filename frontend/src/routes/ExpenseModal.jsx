@@ -2,13 +2,12 @@ import { Form,useNavigate,redirect, useLocation, useOutletContext, useActionData
 import { deleteExpenses, getExpenses, postExpenses,updateExpenses } from "../data/expenseServices";
 import styles from "../styles/modal.module.css";
 import {IoCloseOutline} from "react-icons/io5";
-import EditExpenseModal from "./EditExpenseModal.jsx";
+
 import { useEffect, useContext } from "react";
 import { CalendarContext } from "./CalendarProvider.jsx";
 
 export async function action({request,params}){
     const formData = await request.formData();
-
     switch(request.method){
 
         case "POST":{
@@ -18,15 +17,23 @@ export async function action({request,params}){
 
         }
         case "PUT":{
+            const url = new URL(request.url);
             const data = Object.fromEntries(formData);
             const id = params.id;
+            const startDate = url.searchParams.get('startDate');
+            const endDate = url.searchParams.get('endDate');
             await updateExpenses(data,id);
-            return 1;
+            return redirect(`/expenses/?startDate=${startDate}&endDate=${endDate}`);
         }
         case "DELETE":{
+            const url = new URL(request.url);
+            const startDate = url.searchParams.get('startDate');
+            const endDate = url.searchParams.get('endDate');
             const ids = formData.getAll('id')
             await deleteExpenses(ids);
-            return 1;
+          
+            return redirect(`/expenses/?startDate=${startDate}&endDate=${endDate}`);
+     
         }
     }
 }
@@ -44,18 +51,14 @@ export default function ExpenseModal(){
             setExpenses(actionData);
             navigate(-1);
         }
-    }, [actionData, setExpenses]);
+    }, [actionData, navigate, setExpenses]);
 
 
     const handleClose = async() =>{
         navigate(`/expenses/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
     }
 
-    if(location.pathname !== "/expenses/modal"){
-        return(
-        <EditExpenseModal location={location}/>
-        )
-    }
+
 
     return(
         <>

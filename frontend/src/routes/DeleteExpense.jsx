@@ -6,7 +6,7 @@ import {FaTrashCan} from "react-icons/fa6";
 
 export default function DeleteExpense({expenseSet,selected,onDelete}){
     return(
-        <Form method="delete" className={styles.deleteContainer}>
+        <Form method="DELETE" className={styles.deleteContainer}>
                 <div className={styles.formGroup}>
                         <input type="hidden"  name="id" value={expenseSet.id}/>
                 </div>

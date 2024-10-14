@@ -44,6 +44,7 @@ public class ExpenseService:IExpenseService
     public async Task<Expenses?>  GetExpense(Guid id)
     {
         var expense = await _expenseContext.Expenses.FindAsync(id);
+        Console.WriteLine("Specific expense from calling id:"+expense);
         return expense;
     }
 

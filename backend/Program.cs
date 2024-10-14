@@ -71,12 +71,12 @@ app.MapGet("/expenses", async Task<IResult>( String? startDate, String? endDate,
 });
 
 
-app.MapGet("/expenses/{id}", async Task<Results<Ok<Expenses>,NotFound<String>>> (Guid id, IExpenseService expenseService, ExpenseTrackerDbContext context) =>
+app.MapGet("/expenses/{id}", async Task<Results<JsonHttpResult<Expenses>,NotFound<String>>> (Guid id, IExpenseService expenseService, ExpenseTrackerDbContext context) =>
 {
     var expense =  await expenseService.GetExpense(id);
     if(expense != null)
     {
-        return TypedResults.Ok<Expenses>(expense);
+        return TypedResults.Json<Expenses>(expense);
     }
     return TypedResults.NotFound("The expenses you are looking for was not found");
 });

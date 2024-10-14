@@ -1,6 +1,8 @@
 
 import { Outlet,Link,} from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
+import { Suspense } from 'react';
+import ExpenseLoading from './ExpenseLoading';
 
 
 
@@ -26,8 +28,9 @@ function Root() {
             </ul>
           </nav>
         </div>
-
-        <Outlet/>
+        <Suspense fallback={<ExpenseLoading/>}>
+          <Outlet/>
+        </Suspense>
       </section>
     </>
   )

@@ -36,6 +36,18 @@ export const getExpenses = async(date = null) =>{
     }
 }
 
+export const getExpense = async(id) =>{
+    try {
+        const response = await fetch(`http://localhost:5258/expenses/${id}`);
+        if(!response.ok){
+            throw new Error("Error grabbing specific expense, id does not exist in the database :(");
+        }
+        return response;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 export const postExpenses = async (data) => {
     
     try {

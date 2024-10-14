@@ -13,7 +13,8 @@ import Expenses from './routes/Expenses.jsx';
 import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
 import Dashboard from './routes/Dashboard.jsx';
 import { CalendarProvider } from './routes/CalendarProvider.jsx';
-import {loader as expenseLoader} from './data/dataLoader.js'
+import {expenseLoader} from './data/dataLoader.js'
+import EditExpenseModal from './routes/EditExpenseModal.jsx';
 
 
 
@@ -39,10 +40,11 @@ const router = createBrowserRouter([
             path:"modal",
             element:<ExpenseModal/>,
             action:modalAction,
+            loader:expenseLoader,
           },
           {
             path:"modal/:id",
-            element:<ExpenseModal/>,
+            element:<EditExpenseModal/>,
             action:modalAction,
             loader:expenseLoader,
           }
