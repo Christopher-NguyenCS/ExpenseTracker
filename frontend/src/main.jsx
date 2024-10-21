@@ -10,7 +10,8 @@ import{
 import ErrorPage from './error-page.jsx';
 // import Expenses, {loader as expenseLoader} from './routes/Expenses.jsx';
 import Expenses from './routes/Expenses.jsx';
-import ExpenseModal, {action as modalAction} from './routes/ExpenseModal.jsx';
+import ExpenseModal from './routes/ExpenseModal.jsx';
+import { action as modalAction } from './data/dataAction.js';
 import Dashboard from './routes/Dashboard.jsx';
 import { CalendarProvider } from './routes/CalendarProvider.jsx';
 import {expenseLoader} from './data/dataLoader.js'

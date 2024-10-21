@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj": {}
+    "d:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj": {}
   },
   "projects": {
-    "D:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj": {
+    "d:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj",
+        "projectUniqueName": "d:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj",
         "projectName": "ExpenseTracker",
-        "projectPath": "D:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj",
+        "projectPath": "d:\\DotNetProjects\\ExpenseTracker\\backend\\ExpenseTracker.csproj",
         "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
-        "outputPath": "D:\\DotNetProjects\\ExpenseTracker\\backend\\obj\\",
+        "outputPath": "d:\\DotNetProjects\\ExpenseTracker\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config"

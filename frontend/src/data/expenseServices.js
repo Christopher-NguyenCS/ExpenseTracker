@@ -69,7 +69,7 @@ export const postExpenses = async (data) => {
         if (!response.ok) {
             throw new Error(`HTTP ERROR! status: ${response.status} `);
         }
-        const newData = response.json();
+        const newData = await response.json();
         return newData;
     } catch (error) {
         console.error('Error adding expenses:', error.message);
@@ -94,7 +94,7 @@ export const deleteExpenses = async(ids) =>{
             .catch(error => console.error(error.message));
     });
     const result = await Promise.all(promises);
-    return result;
+    return await result;
 }
 
 export const updateExpenses = async(data,id) =>{

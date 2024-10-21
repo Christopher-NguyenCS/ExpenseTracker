@@ -28,9 +28,7 @@ function Root() {
             </ul>
           </nav>
         </div>
-        <Suspense fallback={<ExpenseLoading/>}>
           <Outlet/>
-        </Suspense>
       </section>
     </>
   )

@@ -55,7 +55,7 @@ app.MapGet("/expenses", async Task<IResult>( String? startDate, String? endDate,
 
     if(startDate == null){
         DateTime now = DateTime.Now;
-        startDate = now.ToString();
+        startDate = now.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
         endDate = startDate;
         expenses = await service.GetExpensesDateRanged(startDate,endDate);
         return Results.Json(expenses);

@@ -1,121 +1,139 @@
 import { Suspense, useContext, useEffect, useState } from "react";
-import styles from "../styles/expenses.module.css" ;
-import {Link,useLocation, useLoaderData, Outlet, useNavigate, useActionData} from "react-router-dom";
-
-import {FaEdit} from "react-icons/fa";
+import styles from "../styles/expenses.module.css";
+import { Link, useLocation, useLoaderData, Outlet, useNavigate, useNavigation,  } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
 import DeleteExpense from "./DeleteExpense";
 import { CalendarContext } from "./CalendarProvider";
 import ExpenseLoading from "./ExpenseLoading";
-
 import SharedCalendar from "./SharedCalendar";
 import { getExpenses } from "../data/expenseServices";
 
-
-
 export default function Expenses() {
-    const{dateRange,setDateRange} = useContext(CalendarContext);
-    const data  = useLoaderData();
-    const [selected, setSelected] = useState(new Array(data.length).fill(false));
-    const [expenses,setExpenses] = useState(data);
+    const { dateRange, setDateRange } = useContext(CalendarContext);
+    const data = useLoaderData();
+
+    const [selected, setSelected] = useState(new Array(data.length).fill(false)); // Ensure this is always a boolean array
+    const [expenses, setExpenses] = useState(data); // State for the fetched expenses
+    const [loading, setLoading] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
-    
+    const navigate = useNavigate(); 
+    const navigation = useNavigation(); 
 
     const handleDateChange = (newDateRange) => {
-        setDateRange(newDateRange);
-        navigate(`/expenses?startDate=${newDateRange.startDate}&endDate=${newDateRange.endDate}`);
-      };
+        console.log("New Date Range:", newDateRange); // Log the new date range input
+        const startDate = new Date(newDateRange.startDate);
+        const endDate = new Date(newDateRange.endDate);
+    
 
-      useEffect(() => {
-        setExpenses(getExpenses(dateRange));
-        navigate(`/expenses?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
-      }, [dateRange, navigate]);
+        console.log("StartDate:",startDate);
+        const formattedDateRange = {
+            startDate: startDate.toUTCString(),
+            endDate: endDate.toUTCString(),
+        };
+        console.log("Formatted Date Range: ",formattedDateRange);
+        setDateRange(formattedDateRange);
+        navigate(`/expenses?startDate=${formattedDateRange.startDate}&endDate=${formattedDateRange.endDate}`);
+    };
+    
 
-    if (data == null) {
-        return <div>Loading expenses</div>;
-    }
+    useEffect(() => {
+        const fetchExpenses = async () => {
+            if (dateRange.startDate && dateRange.endDate) {
+                setLoading(true);
+                try {
+                    const response = await getExpenses([dateRange.startDate, dateRange.endDate]);
+                    const newExpenses = await response.json();
+                    setExpenses(newExpenses);
+                    setSelected(new Array(newExpenses.length).fill(false)); 
+                } catch (error) {
+                    console.error("Error fetching expenses:", error);
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                console.log("dateRange is undefined:", dateRange);
+            }
+        };
+    
+        fetchExpenses();
+    }, [dateRange,data]);
 
-
-    function handleCheckBox(event, index) {
+    const handleCheckBox = (event, index) => {
         const isChecked = event.target.checked;
-        const newSelected = [...selected];
-        newSelected[index] = isChecked;
-        setSelected(newSelected);
-    }
-
-
+        setSelected(prevSelected => {
+            const newSelected = [...prevSelected];
+            newSelected[index] = isChecked;
+            return newSelected;
+        });
+    };
 
     function handleDelete(index) {
-        const deleteIndex = data.findIndex((d) => d.id === index);
-        selected[deleteIndex] = false;
-        selected.splice(deleteIndex,1);
-        setSelected(selected);
+        const deleteIndex = expenses.findIndex((d) => d.id === index);
+        setSelected(prevSelected => {
+            const newSelected = [...prevSelected];
+            newSelected.splice(deleteIndex, 1);
+            return newSelected;
+        });
     }
 
-
-
     return (
-        
-        
-        <div className={styles.container}>
-            <header className={styles.header1}>
-                <h1>Expense Transaction</h1>
-
-                <Link to={`/expenses/modal/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} state={{ background: location }} className={styles.addBtn}>
-                    <button type="button">Add Expense</button>
-                </Link>
-                <Outlet context={[expenses,setExpenses]}/>
-            </header>
-            <table className={styles.tableContainer}>
-                <thead>
-                    <tr className={styles.header2}>
-                        <th>
-                        </th>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-            
-                <tbody>
-                    {expenses ? data.map((expense, index) => (
-                        <tr key={expense.id}>
-                            <td>
-                                <input
-                                type="checkbox"
-                                name={expense?.title}
-                                id={index.toString()}
-                                checked={selected[index]}
-                                onChange={e => handleCheckBox(e, index)}
-                                />
-                                <Suspense fallback={<ExpenseLoading/>}>
-                                    <DeleteExpense 
+        <>
+            {loading ? <ExpenseLoading /> : (
+                <div className={styles.container}>
+                    <header className={styles.header1}>
+                        <h1>Expense Transaction</h1>
+                        <Link to={`/expenses/modal/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} state={{ background: location }} className={styles.addBtn}>
+                            <button type="button">Add Expense</button>
+                        </Link>
+                        <Outlet context={[expenses, setExpenses]} />
+                    </header>
+                    <table className={styles.tableContainer}>
+                        <thead>
+                            <tr className={styles.header2}>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {expenses ? expenses.map((expense, index) => (
+                                <tr key={expense.id}>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            name={expense?.title}
+                                            id={index.toString()}
+                                            checked={selected[index] || false} // Ensures it’s never undefined
+                                            onChange={e => handleCheckBox(e, index)}
+                                        />
+                                        <DeleteExpense
                                             expenseSet={expense}
                                             selected={selected[index]}
                                             onDelete={handleDelete}
-                                    />
-
-                                </Suspense>
-                                <Link 
-                                to={`/expenses/modal/${expense.id}/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} 
-                                state={{ background: location, data: {expense}}} 
-                                className={selected[index]?styles.editIcon:styles.hideIcon} 
-                                onClick={()=>{selected[index] = false}}
-                                >
-                                    <FaEdit />
-                                </Link>
-                            </td>
-                            <td>{expense.date}</td>
-                            <td>{expense.title}</td>
-                            <td>{expense.category}</td>
-                            <td>$ {expense.cost.toFixed(2)}</td>
-                        </tr>
-                    )):<div>Loading expenses</div>}
-                </tbody>
-             
-            </table>
-            <SharedCalendar onChange={handleDateChange} value={dateRange}/>
-    </div>
+                                        />
+                                  
+                                        <Link
+                                            to={`/expenses/modal/${expense.id}/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`}
+                                            state={{ background: location, data: { expense } }}
+                                            className={selected[index] ? styles.editIcon : styles.hideIcon}
+                                            onClick={() => { selected[index] = false }}
+                                        >
+                                            <FaEdit />
+                                        </Link>
+                                    </td>
+                                    <td>{expense.date}</td>
+                                    <td>{expense.title}</td>
+                                    <td>{expense.category}</td>
+                                    <td>$ {expense.cost.toFixed(2)}</td>
+                                </tr>
+                            )) : <div>Loading expenses</div>}
+                        </tbody>
+                    </table>
+                    <SharedCalendar onChange={handleDateChange} value={dateRange} />
+                </div>
+            )}
+        </>
     );
 }
