@@ -20,17 +20,16 @@ export default function Expenses() {
     const navigation = useNavigation(); 
 
     const handleDateChange = (newDateRange) => {
-        console.log("New Date Range:", newDateRange); // Log the new date range input
+
         const startDate = new Date(newDateRange.startDate);
         const endDate = new Date(newDateRange.endDate);
     
 
-        console.log("StartDate:",startDate);
         const formattedDateRange = {
             startDate: startDate.toUTCString(),
             endDate: endDate.toUTCString(),
         };
-        console.log("Formatted Date Range: ",formattedDateRange);
+ 
         setDateRange(formattedDateRange);
         navigate(`/expenses?startDate=${formattedDateRange.startDate}&endDate=${formattedDateRange.endDate}`);
     };

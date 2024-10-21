@@ -20,10 +20,15 @@ export default function Dashboard(){
 
     
     const handleDateChange = (newDateRange) => {
-        setDateRange(newDateRange);
-        navigate(`/?startDate=${newDateRange.startDate}&endDate=${newDateRange.endDate}`);
-      };
-
+        const startDate = new Date(newDateRange.startDate);
+        const endDate = new Date(newDateRange.endDate);
+        const formattedDateRange = {
+            startDate: startDate.toUTCString(),
+            endDate: endDate.toUTCString(),
+        };
+        setDateRange(formattedDateRange);
+        navigate(`/expenses?startDate=${formattedDateRange.startDate}&endDate=${formattedDateRange.endDate}`);
+    };
     useEffect(() => {
         navigate(`/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
     }, [dateRange, navigate]);
