@@ -26,7 +26,7 @@ export async function action({request,params}){
             const url = new URL(request.url);
             const startDate = url.searchParams.get('startDate');
             const endDate = url.searchParams.get('endDate');
-            const ids = formData.getAll('id')
+            const ids = formData.getAll('id');
             await deleteExpenses(ids);
             return redirect(`/expenses/?startDate=${startDate}&endDate=${endDate}`);
         }

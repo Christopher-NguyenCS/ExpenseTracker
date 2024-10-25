@@ -25,7 +25,6 @@ export default function ExpenseModal(){
     }
 
 
-    console.log("Modal navigation state: ", navigation.state);
     return(
         <>
           {navigation.state == "submitting" && <p>Submitting...</p>}

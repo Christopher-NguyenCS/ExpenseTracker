@@ -7,8 +7,7 @@ import {FaTrashCan} from "react-icons/fa6";
 export default function DeleteExpense({expenseSet,selected,onDelete}){
     const navigation = useNavigation();
 
-    console.log("Delete navigation state: ", navigation.state);
-    console.log("Delete navigate formData: ", navigation.formData);
+
     return(
         <>
             {navigation.state == "submitting" && <p>Submitting...</p>}

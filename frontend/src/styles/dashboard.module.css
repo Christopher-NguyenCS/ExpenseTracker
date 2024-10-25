@@ -20,8 +20,14 @@
 
 .listContainer{
     display:flex;
-    border:1px solid black;
+    border:5px solid black;
     flex-direction:column;
     height: 100%;
     width: 40%;   
+}
+
+.noDataContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

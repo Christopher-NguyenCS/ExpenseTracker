@@ -2,6 +2,7 @@ import {Pie} from "react-chartjs-2";
 import { useState, useEffect} from "react";
 import { months } from "../data/months.js";
 import styles from "../styles/pieChart.module.css"
+import { useLocation } from "react-router-dom";
 
 
 
@@ -97,6 +98,7 @@ function getColors(chartData,backgroundColor){
 
 export default function PieChart({chartData}){
     let backgroundColor = ["#36a2eb","#ff6384","#4bc0c0","#ff9f40","#9966ff","#ffcd56"];
+    const location = useLocation();
     const [formatData, setFormatData] = useState({
         labels: findLabel(chartData),
         datasets:[
@@ -120,7 +122,10 @@ export default function PieChart({chartData}){
                 })
         }
     },[chartData]);
-
+    console.log("Beginning of PieChart");
+    console.log(location.pathname);
+    console.log(location.search);
+    console.log("End of PieChart");
 
     return(
         <>

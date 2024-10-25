@@ -3,27 +3,6 @@ import styles from "../styles/transactionList.module.css";
 
 
 export default function TransactionList({transactionData}){
-    // const [list, setList] = useState(null);
-
-    // useEffect(()=>{
-    //     if(transactionData)
-    //         setList(transactionData);
-    // },[transactionData,setList]);
-
-    // if(!list){
-    //     return(
-    //         <>
-    //             <div>Loading data....</div>
-    //         </>
-    //     )
-    // }
-    // if(!data){
-    //     return(
-    //         <>
-    //             <div>Loading data...</div>
-    //         </>
-    //     )
-    // }
 
     return(
         <>
@@ -32,7 +11,7 @@ export default function TransactionList({transactionData}){
                 <div className={styles.listContainer}>
                     <header><h2>Transaction History</h2></header>
                     <ul className={styles.list}>    
-                        {transactionData.length > 0 ? transactionData.map(d => (<li key={d?.id}>{d.title}: ${d.cost}</li>)):<li>None in Transaction history: {transactionData.length}</li>}
+                        {transactionData.length > 0 ? transactionData.map(d => (<li key={d?.id}>{d.title}: ${d.cost}</li>)):<li>None in Transaction history....</li>}
                     </ul>
                 </div> 
 

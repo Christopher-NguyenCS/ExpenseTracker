@@ -1,23 +1,29 @@
 
 import Calendar from 'react-calendar';
 // import "../styles/calendar.css";
-import 'react-calendar/dist/Calendar.css';
 
+import "../styles/calendar.css";
+import styles from '../styles/sharedCalendar.module.css';
+import { useState } from 'react';
 
 const SharedCalendar = ({ onChange,value }) => {
+  const [selectDate, setSelectDate] = useState(false);
   const handleDateChange = (newDate) => {    
-    console.log("Before SharedCalendar convert for newDate:",newDate);
     const startDate = newDate[0]
     const endDate = newDate[1] || newDate[0];
-    onChange({startDate,endDate});
+    
+    setSelectDate(prevState => {
+      onChange({ startDate, endDate });
+      return true;
+    });
   };
-  console.log("Value for SharedCalendar before handleDateChange",value);
+
   return (
-    <div>
-      <h2>Select a Date</h2>
+    <div className={styles.container}>
+      {selectDate ?  null :<h2>Select a Date Range</h2>}
       <Calendar
         onChange={handleDateChange}
-        value={[value.startDate, value.endDate]}
+        value={[new Date(value.startDate), new Date(value.endDate)]}
         selectRange={true}
         activeStartDate={null}
       />

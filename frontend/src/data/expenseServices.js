@@ -18,6 +18,8 @@ export const getExpenses = async(date = null) =>{
             return data;
         }
         else{
+            date[0] = new Date(date[0]).toUTCString();
+            date[1] = new Date(date[1]).toUTCString();
                 const response = await fetch(`http://localhost:5258/expenses?startDate=${date[0]}&endDate=${date[1]}`,{
                     method:"GET", 
                     headers:{
