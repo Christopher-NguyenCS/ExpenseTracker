@@ -56,7 +56,7 @@ public class ExpenseService:IExpenseService
     var secondParameter = new NpgsqlParameter("@p2", NpgsqlTypes.NpgsqlDbType.TimestampTz);
     List<Expenses> newExpenseList = new List<Expenses>();
 
-    await using var cmd = _dataSource.CreateCommand("SELECT * FROM expenses WHERE \"Date\" >= @p1 AND \"Date\" <= @p2 ORDER BY \"Date\",\"Cost\"");
+    await using var cmd = _dataSource.CreateCommand("SELECT * FROM expenses WHERE \"Date\" >= @p1 AND \"Date\" <= @p2 ORDER BY \"Date\",\"Cost\",\"Time\"");
     firstParameter.Value = newStartDate;
     secondParameter.Value = newEndDate;
 
