@@ -11,7 +11,15 @@ export default function TransactionList({transactionData}){
                 <div className={styles.listContainer}>
                     <header><h2>Transaction History</h2></header>
                     <ul className={styles.list}>    
-                        {transactionData.length > 0 ? transactionData.map(d => (<li key={d?.id}>{d.title}: ${d.cost}</li>)):<li>None in Transaction history....</li>}
+                        {transactionData.length > 0 ? transactionData.map((d,index) => {
+                            if(index == 9)
+                            {
+                                return;
+                            }
+                        
+                            return <li key={d?.id}>{d.title}: ${d.cost}</li>
+                    }):<li>None in Transaction history....</li>}
+                            
                     </ul>
                 </div> 
 
