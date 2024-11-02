@@ -1,8 +1,7 @@
 
 import { Outlet,Link,} from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
-import { Suspense } from 'react';
-import ExpenseLoading from './ExpenseLoading';
+
 
 
 
@@ -14,19 +13,28 @@ function Root() {
     <>
 
       <div className={styles.mainPage}>
-        <h1>Main Page!</h1>
+        <h1>ExpensesTracker.io</h1>
       </div>
 
       <section className={styles.mainContainer}>
         
         <div className={styles.verticalTabs}>
-          <nav className={styles.navigation}>
-            <ul>
-              <li><Link to="/">Dashboard</Link> </li>
-              <li><Link to="expenses">Expenses</Link> </li>
+          <ul className={styles.navigation}>
+            <li >
+              <Link to="/" className={styles.navigationLink }>
+                <button className={styles.navigationBtn}>Dashboard  </button> 
+              </Link>
+            </li>
 
-            </ul>
-          </nav>
+            <li>
+              <Link to="/expenses" className={styles.navigationLink}>
+                <button className={styles.navigationBtn}>Expenses</button>
+              </Link>
+
+            </li>
+
+            
+          </ul>
         </div>
           <Outlet/>
       </section>

@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect, useState, useMemo } from "react";
+import { Suspense, useContext, useEffect, useState, useMemo,useRef } from "react";
 import styles from "../styles/expenses.module.css";
 import { Link, useLocation, useLoaderData, Outlet, useNavigate, useNavigation,  } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
@@ -15,11 +15,12 @@ export default function Expenses() {
     const [selected, setSelected] = useState(new Array(data.length).fill(false)); // Ensure this is always a boolean array
     const [expenses, setExpenses] = useState(data); // State for the fetched expenses
     const [loading, setLoading] = useState(false);
-    
+    const [selectAll, setSelectAll] = useState(false);
     const [currentPage,setCurrentPage] = useState(1);
     const expensesPerPage = 10;
     const location = useLocation();
     const navigate = useNavigate(); 
+    const prevPage = useRef(currentPage);
     const navigation = useNavigation(); 
 
     const handleDateChange = (newDateRange) => {
@@ -41,6 +42,14 @@ export default function Expenses() {
 
     },[currentPage,expenses]);
 
+    useEffect(()=>{
+        if(prevPage != currentPage){
+            setSelected(new Array(expenseDataTable.length).fill(false));
+            setSelectAll(false);
+            prevPage.current = currentPage;
+        }
+    },[currentPage]);
+
     useEffect(() => {
         const fetchExpenses = async () => {
             if (dateRange.startDate && dateRange.endDate) {
@@ -61,6 +70,19 @@ export default function Expenses() {
         };
         fetchExpenses();
     }, [dateRange,data]);
+
+    const handleMultipleCheckBox = (event) =>{
+        const isChecked = event.target.checked;
+        const item = selected.map(() => isChecked);
+        setSelected(item);
+        setSelectAll(isChecked);
+    }
+    const handleDeleteAll = () =>{
+        setSelected(prevSelected =>
+            prevSelected.filter(p => p ==false)
+        );
+
+    }
 
     const handleCheckBox = (event, index) => {
         const isChecked = event.target.checked;
@@ -96,7 +118,9 @@ export default function Expenses() {
                         <table className={styles.tableContainer}>
                             <thead>
                                 <tr className={styles.header2}>
-                                    <th></th>
+
+                                    <th>
+                                    </th>
                                     <th>Date</th>
                                     <th>Title</th>
                                     <th>Category</th>
@@ -107,6 +131,9 @@ export default function Expenses() {
                                 {expenseDataTable.map((expense, index) => (
                                     <tr key={expense.id}>
                                         <td>
+                
+
+                                            
                                             <input
                                                 type="checkbox"
                                                 name={expense?.title}
