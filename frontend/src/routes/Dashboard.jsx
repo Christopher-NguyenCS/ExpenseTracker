@@ -92,8 +92,7 @@ export default function Dashboard(){
                         <header>{displayDate(dateRange)} </header>
 
                     </div>
-                        <PieChart chartData={chartData}/>
-                    :
+                    <PieChart chartData={chartData}/>
                 </div>
                 :
                 <div className={styles.noDataContainer}>
@@ -101,12 +100,13 @@ export default function Dashboard(){
                         <header>{displayDate(dateRange)}</header>
                     </div>
                 </div>
-                    }
+            }
 
                 <div className={styles.listContainer}>
                     <SharedCalendar onChange={handleDateChange} value={dateRange}/>
                     <TransactionList transactionData={chartData}/>
                 </div>
+                
             </section>
         </>
     )
