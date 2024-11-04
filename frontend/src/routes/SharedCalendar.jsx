@@ -19,8 +19,13 @@ const SharedCalendar = ({ onChange,value }) => {
   };
 
   return (
-    <div className={styles.container}>
-      {selectDate ?  null :<h2>Select a Date Range</h2>}
+    <div className={styles.sharedContainer}>
+      {/* {selectDate ?  null 
+      :
+      <header className={styles.calendarHeader}>
+        <h2>Select a Date Range</h2>
+      </header>
+      } */}
       <Calendar
         onChange={handleDateChange}
         value={[new Date(value.startDate), new Date(value.endDate)]}

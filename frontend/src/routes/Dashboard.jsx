@@ -103,8 +103,12 @@ export default function Dashboard(){
             }
 
                 <div className={styles.listContainer}>
-                    <SharedCalendar onChange={handleDateChange} value={dateRange}/>
-                    <TransactionList transactionData={chartData}/>
+                    <div className={styles.testCalendar}>
+                        <SharedCalendar onChange={handleDateChange} value={dateRange}/>
+                    </div>
+                    <div className={styles.transactionHistoryList}>
+                        <TransactionList transactionData={chartData}/>
+                    </div>
                 </div>
                 
             </section>

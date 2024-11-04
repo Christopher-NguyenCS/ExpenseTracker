@@ -1,6 +1,14 @@
-.container{
+.calendarHeader {
+    margin: 0;
+    padding: 0;
+    border: 5px solid red;
+}
+
+.sharedContainer {
+    padding: 0;
+    margin-bottom: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
+    border: 1px dotted black;
 }
