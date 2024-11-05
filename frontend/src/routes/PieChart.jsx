@@ -98,7 +98,28 @@ function getColors(chartData,backgroundColor){
 
 export default function PieChart({chartData}){
     let backgroundColor = ["#36a2eb","#ff6384","#4bc0c0","#ff9f40","#9966ff","#ffcd56"];
-    const location = useLocation();
+    const[screenSize, setScreenSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
+    const handleResize = () =>{
+        setScreenSize({
+            width:window.innerWidth,
+            height:window.innerHeight,
+        });
+    };
+
+    const getFontSize = () =>{
+        if(screenSize<600 || screenSize.height<600) {
+            return 10;
+        }
+        if((screenSize>=600 || screenSize.height<1024) || (screenSize.height >= 600 && screenSize.height < 800)){
+            return 20;
+        }
+        return 24;
+    }
+
     const [formatData, setFormatData] = useState({
         labels: findLabel(chartData),
         datasets:[
@@ -108,6 +129,14 @@ export default function PieChart({chartData}){
             }
         ]
     });
+
+    //add a resize event listener whenever screenSize is resized
+    useEffect(()=>{
+        window.addEventListener('resize',handleResize);
+        return()=>{
+            window.removeEventListener('resize',handleResize);
+        }
+    },[]);
 
     useEffect(()=>{
         if(chartData){
@@ -122,10 +151,7 @@ export default function PieChart({chartData}){
                 })
         }
     },[chartData]);
-    console.log("Beginning of PieChart");
-    console.log(location.pathname);
-    console.log(location.search);
-    console.log("End of PieChart");
+
 
     return(
         <>
@@ -137,7 +163,15 @@ export default function PieChart({chartData}){
                         key:'cost.value',
                     },
                     responsive:true,
-  
+                    plugins:{
+                        legend:{
+                            labels:{
+                                font:{
+                                    size: getFontSize()
+                                }
+                            }
+                        }
+                    },
                 }}
             />
         </section>

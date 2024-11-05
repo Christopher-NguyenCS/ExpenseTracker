@@ -15,9 +15,9 @@
 .mainContainer{
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
+
     justify-content: flex-start;
-    /* align-items: flex-end; */
+  
     width: 100%;
     height:auto;
 }
@@ -32,6 +32,7 @@
     background-color: white;
     box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.228);
     overflow: auto;
+    
 }
 
 .navigation {
@@ -41,16 +42,14 @@
     align-items: flex-start;
     padding: 0px;
     background-color: white;
+    height: 25%;
 }
 
 ul {
     list-style-type: none;
 }
 
-li {
-    width: 100%;
-    margin: 10px 0; /* Adjust margins to avoid exceeding the container */
-}
+
 
 .navigationLink {
     display: flex;
@@ -62,7 +61,11 @@ li {
     color: black;
 }
 
-.navigationBtn {
+.navigationLink:active{
+    background-color: aqua;
+}
+
+.navigationBtn{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,15 +73,38 @@ li {
     padding: 5px;
     width: 100%;
     height: 100%;
+    font-size: 1vh;
     text-decoration: none;
     background-color: rgba(255, 255, 255, 0.527);
     color: black;
     cursor: pointer;
 }
 
-.navigationBtn:hover {
+
+a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    color: black;
+    font-size:2vh;
+}
+
+
+a:hover{
     background-color: rgba(211, 211, 211, 0.398);
-    width: 100%; /* Ensure it stretches full width on hover */
+    width: 100%;
+    cursor: pointer;
+    color: rgb(85, 103, 196);
+}
+
+.navigationLink:hover {
+    background-color: rgba(211, 211, 211, 0.398);
+    width: 100%;
+    cursor: pointer;
 }
 
 

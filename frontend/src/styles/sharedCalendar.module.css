@@ -10,5 +10,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: 1px dotted black;
+    border: 2px solid rgba(173, 216, 230, 0.327);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.194);
 }

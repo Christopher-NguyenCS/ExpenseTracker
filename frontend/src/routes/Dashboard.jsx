@@ -3,21 +3,21 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js/auto";
 import PieChart from "./PieChart";
 import { useContext,useEffect,useState } from "react";
-import { redirect, useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { getMonth,getDate, getYear, isSameDay, getDaysInMonth } from "date-fns";
+import { useLoaderData, useNavigate,Link } from "react-router-dom";
+import { getMonth,getDate, getYear, isSameDay} from "date-fns";
 import { months } from "../data/months";
 import { CalendarContext } from "./CalendarProvider";
 
 import SharedCalendar from "./SharedCalendar";
 import TransactionList from "./TransactionList";
 import { getExpenses } from "../data/expenseServices";
+
 Chart.register(CategoryScale);
 
 
 export default function Dashboard(){
     const {dateRange,setDateRange} = useContext(CalendarContext);
     const navigate = useNavigate();
-    const location = useLocation();
     const data = useLoaderData();
     const [chartData,setChartData] = useState(data);
     
@@ -47,7 +47,6 @@ export default function Dashboard(){
     },[]);
 
     useEffect(()=>{
-
         const fetchExpenses = async () => {
             if(dateRange.startDate && dateRange.endDate){
                 try {
@@ -68,8 +67,6 @@ export default function Dashboard(){
         navigate(`/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
     }, [dateRange, navigate]);
 
-
-
     function displayDate(){
         if(dateRange){
             if(isSameDay(dateRange.startDate,dateRange.endDate)){
@@ -89,16 +86,15 @@ export default function Dashboard(){
             {chartData.length != 0 ?
                 <div className={styles.pieContainer}>
                     <div>
-                        <header>{displayDate(dateRange)} </header>
-
+                        <header><h2>{displayDate(dateRange)}</h2></header>
                     </div>
                     <PieChart chartData={chartData}/>
                 </div>
                 :
                 <div className={styles.noDataContainer}>
-                    <div>
-                        <header>{displayDate(dateRange)}</header>
-                    </div>
+
+                    <header>There is no expenses from the given dates! <h1>{displayDate(dateRange)}</h1></header>
+                    
                 </div>
             }
 
@@ -107,7 +103,17 @@ export default function Dashboard(){
                         <SharedCalendar onChange={handleDateChange} value={dateRange}/>
                     </div>
                     <div className={styles.transactionHistoryList}>
-                        <TransactionList transactionData={chartData}/>
+                        <div className={styles.transactionContainer}>
+                            <div className={styles.transactionList}>
+                                <TransactionList transactionData={chartData}/>                        
+                            </div>
+                        </div>
+
+                        <div className={styles.btnContainer}>
+                            <Link to={"/expenses"}>
+                                View All Transaction
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 

@@ -1,5 +1,5 @@
 
-import { Outlet,Link,} from 'react-router-dom';
+import { Outlet,Link, NavLink,} from 'react-router-dom';
 import styles from "../styles/mainPage.module.css";
 
 
@@ -19,22 +19,18 @@ function Root() {
       <section className={styles.mainContainer}>
         
         <div className={styles.verticalTabs}>
-          <ul className={styles.navigation}>
-            <li >
-              <Link to="/" className={styles.navigationLink }>
-                <button className={styles.navigationBtn}>Dashboard  </button> 
-              </Link>
-            </li>
+          <div className={styles.navigation}>
+            <NavLink to="/" className={({isActive,isPending})=> isPending?"pending":isActive?"active":""}>
+            Dashboard 
+            </NavLink>
 
-            <li>
-              <Link to="/expenses" className={styles.navigationLink}>
-                <button className={styles.navigationBtn}>Expenses</button>
-              </Link>
+            <NavLink to="/expenses"  className={({isActive,isPending})=> isPending?"pending":isActive?"active":""}>
+                Expenses
+            </NavLink>
 
-            </li>
 
             
-          </ul>
+          </div>
         </div>
           <Outlet/>
       </section>

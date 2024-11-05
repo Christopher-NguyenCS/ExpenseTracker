@@ -1,71 +1,73 @@
-.container {
-    display:flex;
+.container{
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100%;
     width: 100%;
     height:100%;
+    overflow-y: scroll;
     margin-bottom: 0;
+    border:2px solid rgba(221, 216, 216, 0.616)
 }
 
+.listExpenses{
+    height:100%;
+    width:100%;
 
-header h2 {
-    display: flex;
-    justify-content: center;
-    border: 2px dotted brown;
-    margin-top: 0;
-}
-
-.btnContainer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    border: 2px solid pink;
-    width: 100%;
-    height: auto;
-}
-
-.btn {
-    height: 20px;
-    border: none;
-    border-radius: 10px;
-    background-color: rgb(54, 216, 97);
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: rgb(24, 180, 65);
 }
 
 .listContainer {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    border:5px solid purple;
-    height: auto;
-    width: 100%;
+    overflow-y: scroll; 
+    max-height: 200px; 
 }
 
 .list {
     list-style-type: none;
     padding-left: 0;
-    border: 2px solid red;
+
     width: 100%;
-    overflow-y: auto;
     margin-bottom: 0;
-    margin-top:0px;
+    margin-top: 0;
+
+    height:100%;
 }
 
 .list li {
-    margin: 1.5rem;
+    padding:15px;
+    margin: 5px;
     font-size: large;
-    height: 30px;
-    width: auto;
-    border: 2px dotted brown;
+    height: auto;
+    border: 1px solid rgb(143, 144, 144);
     border-radius: 5px;
     text-align: center;
+}
+
+
+.emptyTransactionContainer {
+    width: 100%;
+
+
+}
+
+@media screen and (min-height: 800px){
+    .list li{
+        font-size:.8vh;
+    }
+    header h2{
+        font-size:.8vh;
+    }
+}
+
+@media screen and (min-height:600px){
+    .list li{
+        font-size:1.5vh;
+    }
+    header h2{
+        font-size:2vh;
+    }
 }
