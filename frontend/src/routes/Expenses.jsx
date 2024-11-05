@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect, useState, useMemo,useRef } from "react";
+import { useContext, useEffect, useState, useMemo,useRef } from "react";
 import styles from "../styles/expenses.module.css";
 import { Link, useLocation, useLoaderData, Outlet, useNavigate, useNavigation,  } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
@@ -21,7 +21,7 @@ export default function Expenses() {
     const location = useLocation();
     const navigate = useNavigate(); 
     const prevPage = useRef(currentPage);
-    const navigation = useNavigation(); 
+
 
     const handleDateChange = (newDateRange) => {
 

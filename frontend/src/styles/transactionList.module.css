@@ -7,7 +7,7 @@
     height:100%;
     overflow-y: scroll;
     margin-bottom: 0;
-    border:2px solid rgba(221, 216, 216, 0.616)
+    border:2px solid rgba(221, 216, 216, 0.616);
 }
 
 .listExpenses{
