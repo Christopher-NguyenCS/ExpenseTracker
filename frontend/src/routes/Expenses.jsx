@@ -8,6 +8,9 @@ import ExpenseLoading from "./ExpenseLoading";
 import SharedCalendar from "./SharedCalendar";
 import { getExpenses } from "../data/expenseServices";
 import Pagination from "./Pagination";
+import { getMonth,getDate, getYear, isSameDay} from "date-fns";
+import { months } from "../data/months";
+
 export default function Expenses() {
     const { dateRange, setDateRange } = useContext(CalendarContext);
     const data = useLoaderData();
@@ -87,12 +90,27 @@ export default function Expenses() {
             return newSelected;
         });
     }
+    function displayDate(){
+        if(dateRange){
+            if(isSameDay(dateRange.startDate,dateRange.endDate)){
+            
+                return(<h1>{months[getMonth(dateRange.startDate)]} {getDate(dateRange.startDate)}, {getYear(dateRange.startDate)}</h1>);
+            }
+            return(
+                <h1>{ months[getMonth(dateRange.startDate)]} {getDate(dateRange.startDate)}, {getYear(dateRange.startDate)} - {months[getMonth(dateRange.endDate)]} {getDate(dateRange.endDate)}, {getYear(dateRange.endDate)}</h1>
+            );
+        }
+        return(<h1>{months[getMonth(dateRange.startDate)]}</h1>);
+    }
 
     return (
         <>
             {loading ? <ExpenseLoading /> : (
                 <div className={styles.container}>
                     <section className={styles.expensesList}>
+                        <header>
+                            {displayDate()}  
+                        </header>
                         <div className={styles.row1}>
                         <header className={styles.header1}>
                             <h1>Expense Transaction</h1>
