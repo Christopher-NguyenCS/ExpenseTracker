@@ -1,40 +1,43 @@
-
 .parentContainer { 
     display: flex;
     justify-content: center; 
     align-items: center; 
-    margin:10px;
-    padding:5px;
+    margin: 1vh; /* Adjust margin using vh */
+    padding: 1vh; /* Adjust padding using vh */
 }
-
 
 .paginationContainer {
     display: flex; 
     justify-content: center; 
-    border: 1px solid grey;
-    border-radius: 10px;
+    border: 0.2vw solid grey; /* Adjust border using vw */
+    border-radius: 1vw; /* Adjust border-radius using vw */
     list-style-type: none;
-    padding: 4px; 
+    padding: 0.5vh; /* Adjust padding using vh */
     margin: 0; 
 }
 
 /* Pagination Item */
 .paginationItem {
-    padding: 0 12px; /* Maintain padding */
-    height: 32px; /* Keep height fixed */
+    padding: 0 1.5vh; /* Adjust padding using vw */
+    height: auto; /* Adjust height using vh */
     text-align: center;
-    margin: 0 4px; /* Space between items, set to 0 for top/bottom */
+    margin: 0 0.5vw; /* Space between items using vw */
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     box-sizing: border-box;
+    justify-content: center;
     align-items: center;
     letter-spacing: 0.01071em;
-    border-radius: 16px;
+    border-radius: 1vw; /* Adjust border-radius using vw */
     line-height: 1.43;
-    font-size: 13px;
-    min-width: 32px; /* Keep min-width fixed or adjust to your preference */
+    font-size: 1.5vh; /* Adjust font-size using vh */
+    min-width: 4vw; /* Adjust min-width using vw */
 }
 
+.paginationItem.dots{
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+}
 .paginationItem.dots:hover {
     background-color: transparent;
     cursor: default;
@@ -49,31 +52,23 @@
     background-color: rgba(0, 0, 0, 0.08);
 }
 
-.arrow::before {
-    position: relative;
-    content: '';
-    display: inline-block;
-    width: 0.4em;
-    height: 0.4em;
-    border-right: 0.12em solid rgba(0, 0, 0, 0.87);
-    border-top: 0.12em solid rgba(0, 0, 0, 0.87);
-}
-
-.arrow.left {
-    transform: rotate(-135deg) translate(-50%);
+.arrow.left{
+    padding:1.5vh;
+    font-size:2.5vh;
 }
 
 .arrow.right {
-    transform: rotate(45deg);
+    padding:1.5vh;
+    font-size:2.5vh;
 }
 
 .paginationItem.disabled {
+    color:rgba(0, 0, 0, 0.43);
     pointer-events: none;
 }
 
 .paginationItem.disabled .arrow::before {
-    border-right: 0.12em solid rgba(0, 0, 0, 0.43);
-    border-top: 0.12em solid rgba(0, 0, 0, 0.43);
+    color: rgba(0, 0, 0, 0.43); /* Adjust border using vh */
 }
 
 .paginationItem.disabled:hover {

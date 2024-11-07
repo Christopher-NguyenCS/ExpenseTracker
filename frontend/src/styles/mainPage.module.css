@@ -10,6 +10,7 @@
     background-color: rgb(2, 136, 209);
     padding: 5px;
     margin: 5px 5px 5px 0px;
+    font-size:1.5vh;
 }
 
 .mainContainer{
@@ -27,12 +28,13 @@
     flex-direction: column;
     border: 1px solid blue;
     padding-left: 0px;
-    width: 300px;
+    width:100%;
+    max-width: 400px;
     height: 100vh;
     background-color: white;
+    margin-right: 1vh;
     box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.228);
-    overflow: auto;
-    
+
 }
 
 .navigation {
@@ -40,9 +42,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 0px;
+    padding: 15px;
     background-color: white;
     height: 25%;
+    overflow: hidden;
 }
 
 ul {

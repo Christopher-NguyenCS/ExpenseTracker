@@ -4,7 +4,7 @@ import {FaTrashCan} from "react-icons/fa6";
 
 
 
-export default function DeleteExpense({expenseSet,selected,onDelete}){
+export default function DeleteExpense({expenseSet,selected,onDelete,index}){
     const navigation = useNavigation();
 
 
@@ -17,7 +17,7 @@ export default function DeleteExpense({expenseSet,selected,onDelete}){
                     <div className={styles.formGroup}>
                             <input type="hidden"  name="id" value={expenseSet.id}/>
                     </div>
-                <button type="submit" className={selected ? styles.deleteIcon : styles.hideIcon} onClick={()=>{onDelete(expenseSet.id)}}>
+                <button type="submit" className={selected ? (index % 2 == 0 ? styles.deleteIconEven:styles.deleteIconOdd) : styles.hideIcon} onClick={()=>{onDelete(expenseSet.id)}}>
                     <FaTrashCan/>
                 </button>
             </Form>  

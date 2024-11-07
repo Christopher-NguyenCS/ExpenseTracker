@@ -1,8 +1,29 @@
-.deleteIcon{
+.deleteIconEven{
     color:rgba(227, 45, 45, 0.774);
     box-shadow: 1px;
     cursor: pointer;
+    border:0px;
+    width:100%;
+    margin-right: 5px;
+    font-size: 1.7vh;
+    background-color: white;
 }
+.deleteIconOdd{
+    color:rgba(227, 45, 45, 0.774);
+    box-shadow: 1px;
+    cursor: pointer;
+    border:0px;
+    width:100%;
+    margin-right: 5px;
+    font-size: 1.7vh;
+    background-color: #f3f3f3;
+}
+
+.deleteIconEven:hover, .deleteIconOdd:hover{
+    color:rgba(227, 45, 45, 0.996);
+}
+
+
 .hideIcon{
     opacity: 0%;
     cursor: not-allowed;

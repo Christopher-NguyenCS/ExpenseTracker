@@ -9,7 +9,6 @@ import { CalendarContext } from "./CalendarProvider.jsx";
 
 
 export default function ExpenseModal(){
-    const [expenses,setExpenses] = useOutletContext();
     const{dateRange,setDateRange} = useContext(CalendarContext);
     const navigate = useNavigate();
     const action = useActionData();
@@ -18,7 +17,7 @@ export default function ExpenseModal(){
     console.log("action in modal: ", action);
 
 
-
+    console.log("modal");
     const handleClose = async() =>{
         navigate(`/expenses/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
        
@@ -33,7 +32,7 @@ export default function ExpenseModal(){
                 <div className={styles.modalDiv} onClick={()=>{handleClose()}}>
                     <div className={styles.modal} onClick={(e)=> e.stopPropagation()}>
                         <div className={styles.closeBtnContainer}>
-                            <button className={styles.closeBtnOutline} onClick={()=>{handleClose()}}><IoCloseOutline className={styles.closeBtn} onClick={()=>{handleClose()}}/></button>
+                            <button className={styles.closeBtnOutline} onClick={()=>{handleClose()}}><IoCloseOutline onClick={()=>{handleClose()}}/></button>
                         </div>
                         <Form method="post" className={styles.formContainer}>
                             <div className={styles.formGroup}>

@@ -1,5 +1,7 @@
 import { usePagination } from "../hook/usePagination";
 import styles from "../styles/pagination.module.css";
+import { FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
 export default function Pagination({currentPage,
     totalCount,
     pageSize,
@@ -29,7 +31,10 @@ export default function Pagination({currentPage,
                     className={`${styles.paginationItem} ${currentPage === 1 ? styles.disabled : ''}`}
                     onClick={onPrevious}
                 >
-                    <div className={`${styles.arrow} ${styles.left}`} />
+                    <div className={`${styles.arrow} ${styles.left}`}>
+                        <FaArrowLeft/>
+                    
+                    </div>
                     
                 </li>
             
@@ -38,7 +43,7 @@ export default function Pagination({currentPage,
                     if (pageNumber === 'DOTS') {
                     return (
                         <li key={index} className={`${styles.paginationItem} ${styles.dots}`}>
-                        &#8230;
+                        <BsThreeDots/>
                         </li>
                     );
                     }
@@ -59,7 +64,9 @@ export default function Pagination({currentPage,
                     className={`${styles.paginationItem} ${currentPage === lastPage ? styles.disabled : ''}`}
                     onClick={onNext}
                 >
-                    <div className={`${styles.arrow} ${styles.right}`} />
+                    <div className={`${styles.arrow} ${styles.right}`}>
+                        <FaArrowRight/>
+                    </div>
                 </li>
                 </ul>
             </div>

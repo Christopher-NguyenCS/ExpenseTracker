@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, useMemo,useRef } from "react";
 import styles from "../styles/expenses.module.css";
-import { Link, useLocation, useLoaderData, Outlet, useNavigate, useNavigation,  } from "react-router-dom";
+import { Link, useLocation, useLoaderData, Outlet, useNavigate,} from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import DeleteExpense from "./DeleteExpense";
 import { CalendarContext } from "./CalendarProvider";
@@ -15,7 +15,6 @@ export default function Expenses() {
     const [selected, setSelected] = useState(new Array(data.length).fill(false)); // Ensure this is always a boolean array
     const [expenses, setExpenses] = useState(data); // State for the fetched expenses
     const [loading, setLoading] = useState(false);
-    const [selectAll, setSelectAll] = useState(false);
     const [currentPage,setCurrentPage] = useState(1);
     const expensesPerPage = 10;
     const location = useLocation();
@@ -45,7 +44,7 @@ export default function Expenses() {
     useEffect(()=>{
         if(prevPage != currentPage){
             setSelected(new Array(expenseDataTable.length).fill(false));
-            setSelectAll(false);
+      
             prevPage.current = currentPage;
         }
     },[currentPage]);
@@ -71,19 +70,6 @@ export default function Expenses() {
         fetchExpenses();
     }, [dateRange,data]);
 
-    const handleMultipleCheckBox = (event) =>{
-        const isChecked = event.target.checked;
-        const item = selected.map(() => isChecked);
-        setSelected(item);
-        setSelectAll(isChecked);
-    }
-    const handleDeleteAll = () =>{
-        setSelected(prevSelected =>
-            prevSelected.filter(p => p ==false)
-        );
-
-    }
-
     const handleCheckBox = (event, index) => {
         const isChecked = event.target.checked;
         setSelected(prevSelected => {
@@ -107,17 +93,24 @@ export default function Expenses() {
             {loading ? <ExpenseLoading /> : (
                 <div className={styles.container}>
                     <section className={styles.expensesList}>
-
+                        <div className={styles.row1}>
                         <header className={styles.header1}>
                             <h1>Expense Transaction</h1>
-                            <Link to={`/expenses/modal/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} state={{ background: location }} className={styles.addBtn}>
-                                <button type="button">Add Expense</button>
-                            </Link>
-                            <Outlet context={[expenses, setExpenses]} />
                         </header>
+
+                        <div className={styles.addBtnContainer}>
+                            <Link to={`/expenses/modal/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`} state={{ background: location }}>
+                                <button className={styles.addBtn}>Add Expense</button>
+                            </Link>
+                            {/* Expense Modal from Outlet */}
+                            <Outlet/>
+
+                        </div>
+
+                        </div>
                         <table className={styles.tableContainer}>
                             <thead>
-                                <tr className={styles.header2}>
+                                <tr>
 
                                     <th>
                                     </th>
@@ -130,31 +123,37 @@ export default function Expenses() {
                             <tbody>
                                 {expenseDataTable.map((expense, index) => (
                                     <tr key={expense.id}>
-                                        <td>
-                
+                                        <td className= {styles.expenseItemContainer}>                  
+                                                <input
+                                                    type="checkbox"
+                                                    name={expense?.title}
+                                                    id={index.toString()}
+                                                    checked={selected[index] || false} 
+                                                    onChange={e => handleCheckBox(e, index)}
+                                                />
+                                                <div className={styles.expenseActionContainer}>
+                                                    <div className={styles.expenseDeleteContainer}>
+                                                        <DeleteExpense
+                                                        expenseSet={expense}
+                                                        selected={selected[index]}
+                                                        onDelete={handleDelete}
+                                                        index={index}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.expenseEditContainer}>
+                                                        <Link
+                                                            to={`/expenses/modal/${expense.id}/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`}
+                                                            state={{ background: location, data: { expense } }}
+                                                            className={selected[index] ? styles.editIcon : styles.hideIcon}
+                                                            onClick={() => { selected[index] = false }}
+                                                        >
+                                                    
+                                                            <FaEdit />
+                                                         
+                                                        </Link>
 
-                                            
-                                            <input
-                                                type="checkbox"
-                                                name={expense?.title}
-                                                id={index.toString()}
-                                                checked={selected[index] || false} 
-                                                onChange={e => handleCheckBox(e, index)}
-                                            />
-                                            <DeleteExpense
-                                                expenseSet={expense}
-                                                selected={selected[index]}
-                                                onDelete={handleDelete}
-                                            />
-
-                                            <Link
-                                                to={`/expenses/modal/${expense.id}/?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`}
-                                                state={{ background: location, data: { expense } }}
-                                                className={selected[index] ? styles.editIcon : styles.hideIcon}
-                                                onClick={() => { selected[index] = false }}
-                                            >
-                                                <FaEdit />
-                                            </Link>
+                                                    </div>
+                                                </div>
                                         </td>
                                         <td>{expense.date}</td>
                                         <td>{expense.title}</td>
