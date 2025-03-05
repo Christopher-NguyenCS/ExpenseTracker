@@ -24,7 +24,6 @@ Designed to securely handle and process expense data, providing a responsive and
 2. Ensure to setup your PostgreSQL database
    - Make sure you have your url, username, and password in to your c# application from postgresql.
    - If you want to add environment variables then ensure you have that set up and to put the file path in .gitignore
-   - 
 3. Navigate to frontend directory
    ```
    cd ../frontend
